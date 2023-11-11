@@ -28,8 +28,16 @@ class MainScreen extends StatelessWidget {
                       page: 0),
                   _bottomAppBarItem(
                       icon: _mainController.currentPage == 1
-                          ? Icons.list_outlined
-                          : Icons.list_alt_outlined,
+                          ? Image.asset(
+                              'assets/images/parking_car_icon.png', // Path to your PNG asset
+                              width: 24,
+                              height: 24,
+                            )
+                          : Image.asset(
+                              'assets/images/parking_car_icon.png', // Path to your PNG asset
+                              width: 24,
+                              height: 24,
+                            ),
                       page: 1),
                   _bottomAppBarItem(
                       icon: _mainController.currentPage == 2
@@ -50,13 +58,15 @@ class MainScreen extends StatelessWidget {
   Widget _bottomAppBarItem({icon, page}) {
     return ZoomTapAnimation(
       onTap: () => _mainController.goToTab(page),
-      child: Icon(
-        icon,
-        color: _mainController.currentPage == page
-            ? ColorsConstants.kActiveColor
-            : Colors.grey,
-        size: 32,
-      ),
+      child: icon is IconData
+          ? Icon(
+              icon,
+              color: _mainController.currentPage == page
+                  ? ColorsConstants.kActiveColor
+                  : Colors.grey,
+              size: 30,
+            )
+          : icon, // If it's an image, just return it
     );
   }
 }

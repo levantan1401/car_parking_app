@@ -4,7 +4,7 @@ class ColorsConstants {
 
 static const kMainColor = Color.fromARGB(255, 53, 75, 121);
 static const kSecondColor = Color(0xFFE5E5E9);
-static const kThirdColor = Color.fromARGB(255, 226, 211, 125);
+static const kThirdscColor = Color.fromARGB(255, 226, 211, 125);
 
 static const kTextMainColor = Color(0xFF363535);
 static const kTextSecondColor = Color(0xFF8E8E93);
