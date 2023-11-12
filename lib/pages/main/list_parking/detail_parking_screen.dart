@@ -41,6 +41,37 @@ class ParkingItemScreen extends StatelessWidget {
           ),
           buttonArrow(context),
           scroll(),
+          Positioned(
+            bottom: 20, // Điều chỉnh khoảng cách từ bottom tùy ý
+            left: 20, // Điều chỉnh khoảng cách từ left tùy ý
+            right: 20, // Điều chỉnh khoảng cách từ right tùy ý
+            child: ElevatedButton(
+              onPressed: () {
+                // Xử lý khi button được nhấn
+              },
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFF567DF4), // Sử dụng màu #567DF4
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                fixedSize: Size.fromHeight(50), // Điều chỉnh chiều cao ở đây
+              ),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.directions,
+                    color: Colors.white,
+                  ),
+                  SizedBox(width: 10), // Khoảng cách giữa icon và text
+                  Text(
+                    "Chỉ Đường",
+                    style: TextStyle(color: Colors.white, fontSize: 15),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     ));
@@ -109,7 +140,9 @@ class ParkingItemScreen extends StatelessWidget {
                   ),
                   Text(
                     name,
-                    style: Theme.of(context).textTheme.titleLarge,
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                   const SizedBox(
                     height: 10,
@@ -118,44 +151,6 @@ class ParkingItemScreen extends StatelessWidget {
                   const SizedBox(
                     height: 15,
                   ),
-                  Row(
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //       builder: (context) =>
-                          //           ProfileTap(showFollowBottomInProfile: true),
-                          //     ));
-                        },
-                        child: const CircleAvatar(
-                          radius: 25,
-                          backgroundImage:
-                              AssetImage("assets/imges/Avatar3.png"),
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Text("Elena Shelby",
-                          style: Theme.of(context).textTheme.headline3!),
-                      const Spacer(),
-                      const CircleAvatar(
-                        radius: 25,
-                        backgroundColor: ColorsConstants.kSecondColor,
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      Text("273 Likes",
-                          style: Theme.of(context).textTheme.headline3!),
-                    ],
-                  ),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 15),
                     child: Divider(
@@ -163,15 +158,17 @@ class ParkingItemScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "Description",
-                    style: Theme.of(context).textTheme.headline1,
+                    "Mô tả",
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   Text(
-                      'Your recipe has been uploaded, you can see it on your profile. Your recipe has been uploaded, you can see it on your',
-                      style: Theme.of(context).textTheme.bodyText2!),
+                      'Bãi đỗ xe ô tô ở Đà Nẵng, mở cửa 24/24, mang đến sự thuận tiện và an toàn cho chiếc xe của bạn. \nVới vị trí trung tâm, hệ thống an ninh hiện đại, và dịch vụ chuyên nghiệp, bạn có thể thoải mái khám phá thành phố mọi lúc, mọi nơi.',
+                      style: Theme.of(context).textTheme.bodyMedium!),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 15),
                     child: Divider(
@@ -179,8 +176,10 @@ class ParkingItemScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "Ingredients",
-                    style: Theme.of(context).textTheme.headline1,
+                    "Dịch vụ: ",
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                   const SizedBox(
                     height: 10,
@@ -189,27 +188,57 @@ class ParkingItemScreen extends StatelessWidget {
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemCount: 3,
-                    itemBuilder: (context, index) => ingredients(context),
+                    itemBuilder: (context, index) {
+                      switch (index) {
+                        case 0:
+                          return ingredients(context, "Dịch Vụ Giữ Xe Qua Đêm");
+                        case 1:
+                          return ingredients(context, "An Ninh 24/7");
+                        case 2:
+                          return ingredients(context, "Dịch Vụ Rửa Xe");
+                        default:
+                          return const SizedBox
+                              .shrink(); // Trả về widget trống nếu index không phù hợp
+                      }
+                    },
                   ),
                   const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 15),
+                    padding: EdgeInsets.symmetric(vertical: 10),
                     child: Divider(
                       height: 4,
                     ),
                   ),
                   Text(
-                    "Steps",
-                    style: Theme.of(context).textTheme.headline1,
+                    "Một số hình ảnh khác: ",
+                    style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
                   ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: ScrollPhysics(),
                     shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
                     itemCount: 3,
-                    itemBuilder: (context, index) => steps(context, index),
-                  ),
+                    itemBuilder: (context, index) {
+                      switch (index) {
+                        case 0:
+                          return steps(context,
+                              "https://filesdata.cadn.com.vn//filedatacadn/media/800/2023/4/18/2p-2.jpg");
+                        case 1:
+                          return steps(context,
+                              "https://xedanangdihoian.vn/wp-content/uploads/2022/11/B%C3%A3i-%C4%91%E1%BA%ADu-xe-H%E1%BB%99i-An-2.png");
+                        case 2:
+                          return steps(context,
+                              "https://staticgthn.kinhtedothi.vn/zoom/868/uploaded/thanhluangthn/2022_12_02/z3930165931059f690746b9dfde564da1cec88126e533b_scss.jpg");
+                        default:
+                          return const SizedBox
+                              .shrink(); // Trả về widget trống nếu index không phù hợp
+                      }
+                    },
+                  )
                 ],
               ),
             ),
@@ -217,66 +246,58 @@ class ParkingItemScreen extends StatelessWidget {
         });
   }
 
-  ingredients(BuildContext context) {
+  ingredients(BuildContext context, String text) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 3),
       child: Row(
         children: [
-          const CircleAvatar(
-            radius: 10,
-            backgroundColor: Color(0xFFE3FFF8),
-            child: Icon(
-              Icons.done,
-              size: 15,
-              color: ColorsConstants.kSecondColor,
+          CircleAvatar(
+            radius: 13,
+            backgroundColor: Color.fromARGB(0, 227, 255, 248),
+            child: Image.asset(
+              'assets/images/icon_tick.png',
+              width: 55,
+              height: 55,
             ),
           ),
           const SizedBox(
-            width: 10,
+            width: 20,
           ),
           Text(
-            "4 Eggs",
-            style: Theme.of(context).textTheme.bodyText2,
+            text,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
         ],
       ),
     );
   }
 
-  steps(BuildContext context, int index) {
+  steps(BuildContext context, String image) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          CircleAvatar(
-            backgroundColor: ColorsConstants.kMainColor,
-            radius: 12,
-            child: Text("${index + 1}"),
-          ),
-          Column(
-            children: [
-              SizedBox(
-                width: 270,
-                child: Text(
-                  "Your recipe has been uploaded, you can see it on your profile. Your recipe has been uploaded, you can see it on your",
-                  maxLines: 3,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2!
-                      .copyWith(color: ColorsConstants.kMainColor),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Image.asset(
-                "assets/imges/Rectangle 219.png",
-                height: 155,
-                width: 270,
-              )
-            ],
+          // CircleAvatar(
+          //   backgroundColor: ColorsConstants.kMainColor,
+          //   radius: 12,
+          //   child: Text("${index + 1}"),
+          // ),
+          // Image.asset(
+          //   "assets/images/splash.png",
+          //   height: 155,
+          //   width: 270,
+          // )
+          ClipRRect(
+            borderRadius: BorderRadius.circular(
+                10.0), // Điều chỉnh giá trị để tạo độ cong
+            child: Image.network(
+              image,
+              width: MediaQuery.of(context).size.width - 50,
+              height: 250,
+              fit: BoxFit.fill,
+            ),
           )
         ],
       ),
