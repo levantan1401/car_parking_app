@@ -7,6 +7,8 @@ import 'package:giuaki_map_location/services/place_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'detail_parking_screen.dart';
+
 class ListParkingScreen extends StatelessWidget {
   // const ListParkingScreen({super.key});
   int limitSubtitle = 65;
@@ -54,6 +56,21 @@ class ListParkingScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Card(
                     child: ListTile(
+                      onTap: () {
+                        print("Click " + stations[index].name);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ParkingItemScreen(
+                              idParking: stations[index]
+                                  .id, // Truyền thông tin sản phẩm
+                              name: stations[index].name,
+                              address: stations[index].address,
+                              image: stations[index].image,
+                            ),
+                          ),
+                        );
+                      },
                       title: Text(
                         stations[index].name,
                         style: const TextStyle(
