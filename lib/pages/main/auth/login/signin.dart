@@ -1,6 +1,10 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:giuaki_map_location/constants/color_constants.dart';
 import 'package:giuaki_map_location/pages/main/auth/login/signup.dart';
+import 'package:http/http.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -10,6 +14,29 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignIn extends State<SignIn> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController PasswordController = TextEditingController();
+  Future<void> login(String email, String password) async {
+    try {
+      Response response = await post(
+        Uri.parse('https://dummyjson.com/auth/login'),
+        body: {'email': email, 'password': password},
+      );
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body.toString());
+        print('Login successful');
+        // You can handle the response data here
+        // For example, you might want to store a token for future requests.
+      } else {
+        print('Login failed');
+        // You might want to handle different status codes differently.
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double _deviceHeight = MediaQuery.sizeOf(context).height;
@@ -56,8 +83,15 @@ class _SignIn extends State<SignIn> {
               right: _deviceHeight * 0.06),
           child: Column(
             children: [
+              // GestureDetector(
+              //   onTap: () {
+              //     login(emailController.text.toString(),
+              //         PasswordController.text.toString());
+              //   },
+              // ),
               // Gmail or username
               TextField(
+                controller: emailController,
                 decoration: InputDecoration(
                   suffixIcon: Icon(Icons.check),
                   label: Text(
@@ -70,6 +104,7 @@ class _SignIn extends State<SignIn> {
                 ),
               ),
               TextField(
+                controller: PasswordController,
                 decoration: InputDecoration(
                   suffixIcon: Icon(Icons.visibility_off),
                   label: Text(
@@ -95,9 +130,11 @@ class _SignIn extends State<SignIn> {
                   ),
                 ),
               ),
+
               SizedBox(
                 height: _deviceHeight * 0.1,
               ),
+
               Container(
                 height: _deviceHeight * 0.07,
                 width: _deviceWidth,
@@ -119,7 +156,9 @@ class _SignIn extends State<SignIn> {
                           fontSize: 20,
                           fontWeight: FontWeight.bold),
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      await login('kminchelle', '0lelplR');
+                    },
                   ),
                 ),
               ),
@@ -172,6 +211,12 @@ class _SignIn extends State<SignIn> {
           ),
         ),
       ),
+      // GestureDetector(
+      //   onTap: () {
+      //     login(emailController.text.toString(),
+      //         PasswordController.text.toString());
+      //   },
+      // ),
     );
   }
 
