@@ -129,7 +129,7 @@ class OnboardingScreenState extends State<OnboardingScreen> {
       padding: EdgeInsets.all(40.sp),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Image(
             fit: BoxFit.fill,

@@ -14,7 +14,7 @@ import 'package:giuaki_map_location/pages/onboarding/onboarding_screen.dart';
 import 'package:giuaki_map_location/pages/splash/splash_screen.dart';
 
 class Routers {
-  static const INITIAL = '/login';
+  static const INITIAL = '/onboarding';
 
   static final routers = [
     GetPage(
