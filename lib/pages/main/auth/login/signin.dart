@@ -7,6 +7,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:giuaki_map_location/constants/color_constants.dart';
 import 'package:giuaki_map_location/pages/main/auth/login/signup.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -32,6 +33,7 @@ class _SignIn extends State<SignIn> {
         var data = jsonDecode(response.body.toString());
         print('Login successful');
         Get.offNamed('/main');
+        saveUserData(username, password);
         // Handle the successful login response data here
       } else {
         print('Login failed: ${jsonDecode(response.body)['message']}');
@@ -40,6 +42,13 @@ class _SignIn extends State<SignIn> {
     } catch (e) {
       print('Error: $e');
     }
+  }
+
+// Lưu thông tin người dùng
+  void saveUserData(String username, String password) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('username', username);
+    prefs.setString('password', password);
   }
 
   @override

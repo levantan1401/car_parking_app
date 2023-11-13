@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,7 +14,15 @@ class ProfileScreen extends StatelessWidget {
     this.tName = 'Tấn',
     this.tMail = 'tan@gmail.com',
   }) : super(key: key);
-  
+// Lấy thông tin người dùng
+  Future<String> getUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String username = prefs.getString('username') ?? '';
+    String password = prefs.getString('password') ?? '';
+
+    return "$username,  $password";
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -156,11 +165,23 @@ class ProfileScreen extends StatelessWidget {
                           child: Column(
                             children: [
                               Container(
-                                child: Text(
-                                    'Welcome to the Car Parking App!\n\n'
-                                    'This app helps you find and manage parking spaces easily. '
-                                    'You can view available parking spots, reserve spots, and get navigation '
-                                    'instructions to reach the parking location. Enjoy a seamless parking experience!'),
+                                child: FutureBuilder<String>(
+                                  future: getUserData(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      // If the Future is still running, return a loading indicator or placeholder
+                                      return CircularProgressIndicator(); // You can replace this with any loading widget.
+                                    } else if (snapshot.hasError) {
+                                      // If the Future throws an error, display the error message
+                                      return Text('Error: ${snapshot.error}');
+                                    } else {
+                                      // If the Future is complete, use the result in the Text widget
+                                      return Text(snapshot.data ??
+                                          'No user data available');
+                                    }
+                                  },
+                                ),
                               ),
                             ],
                           ),
