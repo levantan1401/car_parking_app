@@ -69,7 +69,9 @@ class ParkingItemScreen extends StatelessWidget {
                     ),
                   );
                 } else {
-                  showToast(context, "Đã hết chỗ đổ xe trống");
+                  // showToast(context, "Đã hết chỗ đổ xe trống");
+                  showCustomDialog(context, "Thông báo",
+                      "Hiện tại đã hết chỗ đổ xe trống\nVui lòng quay lại sau.");
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -110,6 +112,32 @@ class ParkingItemScreen extends StatelessWidget {
           onPressed: scaffold.hideCurrentSnackBar,
         ),
       ),
+    );
+  }
+
+  void showCustomDialog(BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            children: [
+              Icon(Icons.info), // Biểu tượng mặc định
+              SizedBox(width: 8),
+              Text(title),
+            ],
+          ),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Đóng dialog khi nhấn nút OK
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -212,7 +240,7 @@ class ParkingItemScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 5),
                                 Text(
-                                  '$slot còn trống',
+                                  slot == 0 ? 'ĐÃ HẾT CHỖ' : '$slot còn trống',
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold),
