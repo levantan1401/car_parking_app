@@ -169,10 +169,12 @@ class _HomePageState extends State<HomePage> {
                                     MaterialPageRoute(
                                       builder: (context) => ParkingItemScreen(
                                         idParking: apiData[i]
-                                            .id, // Truyền thông tin sản phẩm
+                                            .id.toString(), // Truyền thông tin sản phẩm
                                         name: apiData[i].name,
                                         address: apiData[i].address,
                                         image: apiData[i].image,
+                                        lat: apiData[i].lat,
+                                        long: apiData[i].long,
                                       ),
                                     ),
                                   );
@@ -185,7 +187,7 @@ class _HomePageState extends State<HomePage> {
                                     borderRadius: BorderRadius.circular(5),
                                   ),
                                   child: Text(
-                                    "Detail",
+                                    "Chi tiết",
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),
@@ -198,7 +200,7 @@ class _HomePageState extends State<HomePage> {
                                     MaterialPageRoute(
                                       builder: (context) => DirectionParking(
                                         idParking: apiData[i]
-                                            .id, // Truyền thông tin sản phẩm
+                                            .id.toString(), // Truyền thông tin sản phẩm
                                             lat: apiData[i].lat,
                                             long: apiData[i].long,
                                       ),

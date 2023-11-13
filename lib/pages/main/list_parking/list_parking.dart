@@ -63,10 +63,13 @@ class ListParkingScreen extends StatelessWidget {
                           MaterialPageRoute(
                             builder: (context) => ParkingItemScreen(
                               idParking: stations[index]
-                                  .id, // Truyền thông tin sản phẩm
+                                  .id
+                                  .toString(), // Truyền thông tin sản phẩm
                               name: stations[index].name,
                               address: stations[index].address,
                               image: stations[index].image,
+                              lat: stations[index].lat,
+                              long: stations[index].long,
                             ),
                           ),
                         );

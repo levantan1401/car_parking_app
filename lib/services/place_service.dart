@@ -5,8 +5,11 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
 class PlaceService {
-  final String apiUrl =
-      "https://654e49accbc325355742ae72.mockapi.io/api/test/located";
+
+
+  // final String apiUrl = "http://192.168.1.6/public/api/parkings";
+  final String apiUrl = "https://654e49accbc325355742ae72.mockapi.io/api/test/locate_test";
+  // "https://654e49accbc325355742ae72.mockapi.io/api/test/locate_test";
 
   Future<List<Place>> getPlace(double lat, double lng) async {
     var response = await http.get(Uri.parse(
@@ -39,5 +42,13 @@ class PlaceService {
     } else {
       throw Exception('Failed to load stations');
     }
+  }
+
+  Future<List<Station>> getDetailStation(int id) async {
+    var response = await http.get(Uri.parse("$apiUrl$id"));
+    var json = convert.jsonDecode(response.body);
+    var jsonResult = json['results'] as List;
+
+    return jsonResult.map((place) => Station.fromJson(place)).toList();
   }
 }
