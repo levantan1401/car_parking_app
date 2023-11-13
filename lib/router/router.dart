@@ -3,6 +3,7 @@ import 'package:giuaki_map_location/controller/home/homepage_binding.dart';
 import 'package:giuaki_map_location/controller/main/main_binding.dart';
 import 'package:giuaki_map_location/controller/onboarding/onboarding_binding.dart';
 import 'package:giuaki_map_location/controller/splash/splash_binding.dart';
+import 'package:giuaki_map_location/pages/main/home/direction_parking.dart';
 import 'package:giuaki_map_location/pages/main/home/home_page.dart';
 import 'package:giuaki_map_location/pages/main/list_parking/list_parking.dart';
 import 'package:giuaki_map_location/pages/main/profile/profile_screen.dart';
@@ -11,7 +12,7 @@ import 'package:giuaki_map_location/pages/onboarding/onboarding_screen.dart';
 import 'package:giuaki_map_location/pages/splash/splash_screen.dart';
 
 class Routers {
-  static const INITIAL = '/splash';
+  static const INITIAL = '/main';
 
   static final routers = [
     GetPage(
@@ -24,6 +25,14 @@ class Routers {
       page: () => OnboardingScreen(),
       binding: OnboardingBinding(),
     ),
+    // GetPage(
+    //   name: '/directions_parking',
+    //   page: () => DirectionParking(),
+    // ),
+    // GetPage(
+    //   name: '/parking_details',
+    //   page: () => ParkingItemScreen(),
+    // ),
     // GetPage(
     //   name: '/main',
     //   page: () => HomePage(),

@@ -51,6 +51,7 @@ class MainScreen extends StatelessWidget {
       body: PageView(
         controller: _mainController.pageController,
         children: [..._mainController.pages],
+        physics: NeverScrollableScrollPhysics(),
       ),
     );
   }

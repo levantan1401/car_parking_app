@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:giuaki_map_location/models/place.dart';
+import 'package:giuaki_map_location/pages/main/home/home_page.dart';
+import 'package:giuaki_map_location/pages/main_screen.dart';
 import 'package:giuaki_map_location/pages/onboarding/onboarding_screen.dart';
 // import 'package:giuaki_map_location/pages/home_page.dart';
 import 'package:giuaki_map_location/pages/search.dart';
@@ -79,6 +81,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'CarParking',
           getPages: Routers.routers,
+          // home: MainScreen(),
           initialRoute: Routers.INITIAL,
           // initialBinding: AppBinding(),
         );
