@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ColorsConstants {
-  static const kMainColor = Color.fromARGB(255, 53, 75, 121);
+  // static const kMainColor = Color.fromARGB(255, 53, 75, 121);
+  static const kMainColor = Color(0xFF567DF4);
   static const kSecondColor = Color(0xFFE5E5E9);
   static const kThirdscColor = Color.fromARGB(255, 226, 211, 125);
 
