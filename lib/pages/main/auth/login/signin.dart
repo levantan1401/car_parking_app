@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:giuaki_map_location/constants/color_constants.dart';
 import 'package:giuaki_map_location/pages/main/auth/login/signup.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
@@ -16,21 +18,24 @@ class SignIn extends StatefulWidget {
 class _SignIn extends State<SignIn> {
   TextEditingController emailController = TextEditingController();
   TextEditingController PasswordController = TextEditingController();
-  Future<void> login(String email, String password) async {
+  Future<void> login(String username, String password) async {
     try {
-      Response response = await post(
+      http.Response response = await http.post(
         Uri.parse('https://dummyjson.com/auth/login'),
-        body: {'email': email, 'password': password},
+        body: {'username': username, 'password': password},
       );
-      print(response.statusCode);
+
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body.toString());
         print('Login successful');
-        // You can handle the response data here
-        // For example, you might want to store a token for future requests.
+        Get.offNamed('/main');
+        // Handle the successful login response data here
       } else {
-        print('Login failed');
-        // You might want to handle different status codes differently.
+        print('Login failed: ${jsonDecode(response.body)['message']}');
+        // Handle the failed login scenario here
       }
     } catch (e) {
       print('Error: $e');

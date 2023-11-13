@@ -13,7 +13,7 @@ class ProfileScreen extends StatelessWidget {
     this.tName = 'Tấn',
     this.tMail = 'tan@gmail.com',
   }) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
