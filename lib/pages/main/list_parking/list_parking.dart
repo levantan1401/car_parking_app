@@ -70,6 +70,8 @@ class ListParkingScreen extends StatelessWidget {
                               image: stations[index].image,
                               lat: stations[index].lat,
                               long: stations[index].long,
+                              slot: stations[index].slot,
+                              max: stations[index].max,
                             ),
                           ),
                         );

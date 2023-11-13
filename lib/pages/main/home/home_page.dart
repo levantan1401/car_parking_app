@@ -169,12 +169,15 @@ class _HomePageState extends State<HomePage> {
                                     MaterialPageRoute(
                                       builder: (context) => ParkingItemScreen(
                                         idParking: apiData[i]
-                                            .id.toString(), // Truyền thông tin sản phẩm
+                                            .id
+                                            .toString(), // Truyền thông tin sản phẩm
                                         name: apiData[i].name,
                                         address: apiData[i].address,
                                         image: apiData[i].image,
                                         lat: apiData[i].lat,
                                         long: apiData[i].long,
+                                        slot: apiData[i].slot,
+                                        max: apiData[i].max,
                                       ),
                                     ),
                                   );
@@ -192,7 +195,9 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 10.w,),
+                              SizedBox(
+                                width: 10.w,
+                              ),
                               GestureDetector(
                                 onTap: () {
                                   Navigator.push(
@@ -200,9 +205,10 @@ class _HomePageState extends State<HomePage> {
                                     MaterialPageRoute(
                                       builder: (context) => DirectionParking(
                                         idParking: apiData[i]
-                                            .id.toString(), // Truyền thông tin sản phẩm
-                                            lat: apiData[i].lat,
-                                            long: apiData[i].long,
+                                            .id
+                                            .toString(), // Truyền thông tin sản phẩm
+                                        lat: apiData[i].lat,
+                                        long: apiData[i].long,
                                       ),
                                     ),
                                   );
