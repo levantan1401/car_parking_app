@@ -4,9 +4,11 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
 class PlaceService {
-  final key = "AIzaSyCvMdGzQ5D9N-pO3kiNBZTziiPu1Uclb_I";
-  final String apiUrl =
-      "https://654e49accbc325355742ae72.mockapi.io/api/test/located";
+  final key = "AIzaSyCE-3x75ItRQv3gssAV7nAyuNx0vaJm3gY"; //key Dung
+  // final key = "AIzaSyCvMdGzQ5D9N-pO3kiNBZTziiPu1Uclb_I";
+
+  final String apiUrl = "http://192.168.1.6/public/api/parkings";
+  // "https://654e49accbc325355742ae72.mockapi.io/api/test/locate_test";
 
   Future<List<Place>> getPlace(double lat, double lng) async {
     var response = await http.get(Uri.parse(
@@ -19,6 +21,8 @@ class PlaceService {
 
   Future<List<Station>> getStations() async {
     final response = await http.get(Uri.parse(apiUrl));
+
+    print(response.statusCode);
 
     if (response.statusCode == 200) {
       final contentType = response.headers['content-type'];
