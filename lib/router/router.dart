@@ -5,6 +5,7 @@ import 'package:giuaki_map_location/controller/onboarding/onboarding_binding.dar
 import 'package:giuaki_map_location/controller/splash/splash_binding.dart';
 import 'package:giuaki_map_location/pages/main/home/home_page.dart';
 import 'package:giuaki_map_location/pages/main/list_parking/list_parking.dart';
+import 'package:giuaki_map_location/pages/main/profile/editprofile_sceent.dart';
 import 'package:giuaki_map_location/pages/main/profile/profile_screen.dart';
 import 'package:giuaki_map_location/pages/main_screen.dart';
 import 'package:giuaki_map_location/pages/onboarding/onboarding_screen.dart';
@@ -24,11 +25,16 @@ class Routers {
       page: () => OnboardingScreen(),
       binding: OnboardingBinding(),
     ),
-    // GetPage(
-    //   name: '/main',
-    //   page: () => HomePage(),
-    //   binding: HomepageBinding(),
-    // ),
+    GetPage(
+      name: '/EditProfile',
+      page: () => EditProfile(),
+      // binding: HomepageBinding(),
+    ),
+    GetPage(
+      name: '/ProfileScreen',
+      page: () => ProfileScreen(),
+      // binding: HomepageBinding(),
+    ),
     GetPage(
         name: '/main',
         page: () => MainScreen(),
@@ -46,6 +52,16 @@ class Routers {
             name: '/profile',
             page: () => ProfileScreen(),
           ),
+          // GetPage(
+          //   name: '/EditProfile',
+          //   page: () => EditProfile(),
+          //   // binding: HomepageBinding(),
+          // ),
+          // GetPage(
+          //   name: '/ProfileScreen',
+          //   page: () => ProfileScreen(),
+          //   // binding: HomepageBinding(),
+          // ),
         ]),
   ];
 }
