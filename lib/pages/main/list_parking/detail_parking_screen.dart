@@ -5,14 +5,19 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
 import '../../../constants/color_constants.dart';
+import '../home/direction_parking.dart';
 
 class ParkingItemScreen extends StatelessWidget {
   final String idParking;
   final String name;
+
   final String address;
+
   final String image;
   final double lat;
   final double long;
+  final int slot;
+  final int max;
 
   const ParkingItemScreen({
     super.key,
@@ -22,6 +27,8 @@ class ParkingItemScreen extends StatelessWidget {
     required this.address,
     required this.lat,
     required this.long,
+    required this.slot,
+    required this.max,
   });
   // const ParkingItemScreen({Key? key}) : super(key: key);
 
@@ -49,7 +56,23 @@ class ParkingItemScreen extends StatelessWidget {
             right: 20, // Điều chỉnh khoảng cách từ right tùy ý
             child: ElevatedButton(
               onPressed: () {
-                // Xử lý khi button được nhấn
+                if (slot > 0) {
+                  print("Click " + name);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DirectionParking(
+                        idParking: idParking, // Truyền thông tin sản phẩm
+                        lat: lat,
+                        long: long,
+                      ),
+                    ),
+                  );
+                } else {
+                  // showToast(context, "Đã hết chỗ đổ xe trống");
+                  showCustomDialog(context, "Thông báo",
+                      "Hiện tại đã hết chỗ đổ xe trống\nVui lòng quay lại sau.");
+                }
               },
               style: ElevatedButton.styleFrom(
                 primary: Color(0xFF567DF4), // Sử dụng màu #567DF4
@@ -77,6 +100,45 @@ class ParkingItemScreen extends StatelessWidget {
         ],
       ),
     ));
+  }
+
+  void showToast(BuildContext context, String message) {
+    final scaffold = ScaffoldMessenger.of(context);
+    scaffold.showSnackBar(
+      SnackBar(
+        content: Text(message),
+        action: SnackBarAction(
+          label: 'OK',
+          onPressed: scaffold.hideCurrentSnackBar,
+        ),
+      ),
+    );
+  }
+
+  void showCustomDialog(BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Row(
+            children: [
+              Icon(Icons.info), // Biểu tượng mặc định
+              SizedBox(width: 8),
+              Text(title),
+            ],
+          ),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop(); // Đóng dialog khi nhấn nút OK
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   buttonArrow(BuildContext context) {
@@ -152,6 +214,71 @@ class ParkingItemScreen extends StatelessWidget {
                   Text(address, style: Theme.of(context).textTheme.bodyMedium),
                   const SizedBox(
                     height: 15,
+                  ),
+                  Positioned(
+                    top: 10,
+                    right: 10,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment
+                          .spaceBetween, // Đảm bảo các phần tử con căn giữa theo chiều ngang
+                      children: [
+                        // Button hiển thị số lượng vị trí còn trống
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 245, 150, 136),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment
+                                  .center, // Căn giữa theo chiều ngang
+                              children: [
+                                const Icon(
+                                  Icons.directions_car,
+                                  color: Colors.white,
+                                ),
+                                const SizedBox(width: 5),
+                                Text(
+                                  slot == 0 ? 'ĐÃ HẾT CHỖ' : '$slot còn trống',
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10), // Khoảng cách giữa hai button
+                        // Button hiển thị tổng số chỗ đỗ xe
+                        Expanded(
+                          child: Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment
+                                  .center, // Căn giữa theo chiều ngang
+                              children: [
+                                Icon(
+                                  Icons.local_parking,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(width: 5),
+                                Text(
+                                  'Tổng $max chỗ',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 15),
