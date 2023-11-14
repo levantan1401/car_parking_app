@@ -22,8 +22,8 @@ class _SignIn extends State<SignIn> {
   Future<void> login(String username, String password) async {
     try {
       http.Response response = await http.post(
-        Uri.parse('https://dummyjson.com/auth/login'),
-        body: {'username': username, 'password': password},
+        Uri.parse('http://192.168.1.6/public/api/login'),
+        body: {'email': username, 'password': password},
       );
 
       print('Response status: ${response.statusCode}');
@@ -171,7 +171,7 @@ class _SignIn extends State<SignIn> {
                           fontWeight: FontWeight.bold),
                     ),
                     onPressed: () async {
-                      await login('kminchelle', '0lelplR');
+                      await login('lvtan.20it1@vku.udn.vn', '12345678');
                     },
                   ),
                 ),

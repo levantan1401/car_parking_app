@@ -80,21 +80,21 @@ class EditProfile extends StatelessWidget {
                   children: [
                     TextFormField(
                       decoration: TTextFormFieldTheme.lightInputTheme.copyWith(
-                        labelText: 'Full Name',
+                        labelText: 'Lê Văn Tấn',
                         prefixIcon: Icon(LineAwesomeIcons.user),
                       ),
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
                       decoration: TTextFormFieldTheme.lightInputTheme.copyWith(
-                        labelText: 'Email',
+                        labelText: 'lvtan.20it1@vku.udn.vn',
                         prefixIcon: Icon(LineAwesomeIcons.envelope),
                       ),
                     ),
                     const SizedBox(height: 20),
                     TextFormField(
                       decoration: TTextFormFieldTheme.lightInputTheme.copyWith(
-                        labelText: 'Phone Number',
+                        labelText: '0946234470',
                         prefixIcon: Icon(LineAwesomeIcons.phone),
                       ),
                       keyboardType: TextInputType.phone,
@@ -102,7 +102,7 @@ class EditProfile extends StatelessWidget {
                     const SizedBox(height: 20),
                     TextFormField(
                       decoration: TTextFormFieldTheme.lightInputTheme.copyWith(
-                        labelText: 'Password',
+                        labelText: '*********',
                         prefixIcon: Icon(
                           LineAwesomeIcons.lock,
                         ),
