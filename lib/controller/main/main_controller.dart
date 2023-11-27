@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:giuaki_map_location/pages/main/home/demo_apivietmap.dart';
 import 'package:giuaki_map_location/pages/main/home/home_page.dart';
 import 'package:giuaki_map_location/pages/main/list_parking/list_parking.dart';
 import 'package:giuaki_map_location/pages/main/profile/profile_screen.dart';
@@ -14,7 +15,8 @@ class MainController extends GetxController {
   var currentBanner = 0.obs;
 
   List<Widget> pages = [
-    HomePage(),
+    // HomePage(),
+    DemoApiVietmap(),
     ListParkingScreen(),
     ProfileScreen(),
   ];

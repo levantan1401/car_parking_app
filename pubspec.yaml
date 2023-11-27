@@ -49,6 +49,13 @@ dependencies:
   cupertino_icons: ^1.0.2
   shared_preferences: ^2.0.8
 
+  
+  # vietmap
+  vietmap_flutter_gl: ^1.2.1
+
+  # map 4D
+  map4d_map: ^2.4.0
+
 
 
 dev_dependencies:

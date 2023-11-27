@@ -344,6 +344,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.0"
+  map4d_map:
+    dependency: "direct main"
+    description:
+      name: map4d_map
+      sha256: "8bfa9a4a0881301115374e16cdb7cd2d209d985737f58d03a8a245dd013f0cc7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.5.0"
   matcher:
     dependency: transitive
     description:
@@ -661,6 +669,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  vietmap_flutter_gl:
+    dependency: "direct main"
+    description:
+      name: vietmap_flutter_gl
+      sha256: d1dfcdc5566c01e37e940f541314b130ff6e81513359181b8a433c8f952cab0a
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.2.7"
+  vietmap_gl_platform_interface:
+    dependency: transitive
+    description:
+      name: vietmap_gl_platform_interface
+      sha256: "394b5bf3bafe4a766ce2c82ac9601c2b48f3847bfe46c79733bc8fda64530220"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.0"
   web:
     dependency: transitive
     description:

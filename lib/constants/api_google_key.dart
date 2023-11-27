@@ -2,3 +2,4 @@
 // const GOOGLE_API_KEY = "AIzaSyBdNYWQisl-s9-tNkiuXvsH7PZUTRUpGMc";
 // const GOOGLE_API_KEY = "AIzaSyBQNIMP-IO7Mp5RBuzGEhPlssqMOqFGOFo";
 const GOOGLE_API_KEY = "AIzaSyCE-3x75ItRQv3gssAV7nAyuNx0vaJm3gY";
+const MAP4D_API_KEY = "981d328bf7c5e1789743919fcb8a73c1";
