@@ -225,7 +225,7 @@ packages:
     source: hosted
     version: "6.3.0"
   google_maps_flutter:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: google_maps_flutter
       sha256: d4914cb38b3dcb62c39c085d968d434de0f8050f00f4d9f5ba4a7c7e004934cb
@@ -344,14 +344,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.2.0"
-  map4d_map:
-    dependency: "direct main"
-    description:
-      name: map4d_map
-      sha256: "8bfa9a4a0881301115374e16cdb7cd2d209d985737f58d03a8a245dd013f0cc7"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.5.0"
   matcher:
     dependency: transitive
     description:

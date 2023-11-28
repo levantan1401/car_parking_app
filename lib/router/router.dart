@@ -4,9 +4,9 @@ import 'package:giuaki_map_location/controller/main/main_binding.dart';
 import 'package:giuaki_map_location/controller/onboarding/onboarding_binding.dart';
 import 'package:giuaki_map_location/controller/splash/splash_binding.dart';
 import 'package:giuaki_map_location/pages/main/auth/login/signin.dart';
-import 'package:giuaki_map_location/pages/main/home/demo_apivietmap.dart';
 import 'package:giuaki_map_location/pages/main/home/direction_parking.dart';
 import 'package:giuaki_map_location/pages/main/home/home_page.dart';
+import 'package:giuaki_map_location/pages/main/home/map_home.dart';
 import 'package:giuaki_map_location/pages/main/list_parking/list_parking.dart';
 import 'package:giuaki_map_location/pages/main/profile/editprofile_sceent.dart';
 import 'package:giuaki_map_location/pages/main/profile/profile_screen.dart';
@@ -67,7 +67,7 @@ class Routers {
           GetPage(
             name: '/home',
             // page: () => HomePage(),
-            page: () => HomePage(),
+            page: () => MapHome(),
           ),
           GetPage(
             name: '/list_parking',

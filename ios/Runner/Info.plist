@@ -50,9 +50,13 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>This app needs access to location when in the background.</string>
 
-	<!-- MAP 4D -->
-	<key>Map4dMapAccessKey</key>
-	<string>981d328bf7c5e1789743919fcb8a73c1</string>
+	<!-- VIETMAP -->
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Your request location description</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Your request location description</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your request location description</string>
 
 </dict>
 </plist>
