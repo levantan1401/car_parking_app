@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:custom_info_window/custom_info_window.dart';
@@ -22,11 +23,12 @@ class MapHome extends StatefulWidget {
 }
 
 class _MapHomeState extends State<MapHome> {
+  List<Station> apiData = List.empty();
   VietmapController? mapController;
-  UserLocation? _userLocation;
+  UserLocation? userLocation;
   final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
-  final List<StaticMarker> myMarkers = [];
+  final List<Marker> myMarkers = [];
   var isLight = true;
   final List<Station> data_api = [];
 
@@ -64,22 +66,46 @@ class _MapHomeState extends State<MapHome> {
     return await Geolocator.getCurrentPosition();
   }
 
+  addLocationParking() async {
+    for (int i = 0; i < apiData.length; i++) {
+      var lat = apiData[i].lat;
+      var lng = apiData[i].long;
+      setState(() {
+        myMarkers.add(
+          Marker(
+            alignment: Alignment.bottomCenter,
+            width: 50,
+            height: 50,
+            child: GestureDetector(
+              onTap: () {
+                showModalBottomSheet(
+                  context: context,
+                  shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(60.sp))),
+                  builder: (BuildContext context) {
+                    return SizedBox(
+                      height: 400.h,
+                      child: _bottomSheetParking(apiData: apiData, i: i),
+                    );
+                  },
+                );
+              },
+              child: Image.asset(
+                "assets/images/parking_here.png",
+                height: 30.h,
+              ),
+            ),
+            latLng: LatLng(lat, lng),
+          ),
+        );
+      });
+    }
+  }
+
   getCurrentPosion() {
     getUserLocation().then(
       (value) async {
-        myMarkers.add(
-          StaticMarker(
-            // alignment: Alignment.bottomCenter,
-            width: 100,
-            height: 100,
-            child: SizedBox(
-              width: 100,
-              height: 100,
-              child: _markerWidget(Icons.location_on),
-            ),
-            latLng: LatLng(value.latitude, value.longitude), bearing: 0,
-          ),
-        );
         print(">>>>>>>>>>>>>> CURRENT: ${value.latitude} , ${value.longitude}");
         setState(() {
           CameraPosition cameraPosition = CameraPosition(
@@ -97,273 +123,10 @@ class _MapHomeState extends State<MapHome> {
   Future<void> getParkingAPI() async {
     try {
       final PlaceService apiService = PlaceService();
-      List<Station> apiData = await apiService.getStations();
+      apiData = await apiService.getStations();
       for (int i = 0; i < apiData.length; i++) {
         print(">>>>>>>>>>>>>> Station NEW:  ${apiData[i].lat}");
         print(">>>>>>>>>>>>STATION: ${apiData}");
-        myMarkers.add(
-          StaticMarker(
-            bearing: 0,
-            latLng: LatLng(apiData[i].lat, apiData[i].long),
-            // child: Image.asset(
-            //   "assets/images/parking_here.png",
-            //   height: 50.h,
-            // ),
-            child: GestureDetector(
-              child: Image.asset(
-                "assets/images/parking_here.png",
-                height: 50.h,
-              ),
-              // onTap: () {
-              //   _customInfoWindowController.addInfoWindow!(
-              //     Container(
-              //       height: 200.h,
-              //       width: 200.w,
-              //       decoration: BoxDecoration(
-              //         color: Colors.white,
-              //         border: Border.all(color: ColorsConstants.kActiveColor),
-              //         borderRadius: BorderRadius.circular(10),
-              //       ),
-              //       child: SingleChildScrollView(
-              //         child: Column(
-              //           children: [
-              //             Container(
-              //               width: 300.w,
-              //               height: 120.h,
-              //               decoration: BoxDecoration(
-              //                 image: DecorationImage(
-              //                   image: NetworkImage(apiData[i].image),
-              //                   fit: BoxFit.fitWidth,
-              //                   filterQuality: FilterQuality.high,
-              //                 ),
-              //                 borderRadius: BorderRadius.all(
-              //                   Radius.circular(10.0),
-              //                 ),
-              //               ),
-              //             ),
-              //             Padding(
-              //               padding: EdgeInsets.all(10.sp),
-              //               child: Row(
-              //                 children: [
-              //                   SizedBox(
-              //                     width: 150.w,
-              //                     child: Text(
-              //                       apiData[i].name,
-              //                       maxLines: 2,
-              //                       overflow: TextOverflow.ellipsis,
-              //                       style: TextStyle(
-              //                           fontSize: 14.sp, color: Colors.black),
-              //                     ),
-              //                   ),
-              //                 ],
-              //               ),
-              //             ),
-              //             Padding(
-              //               padding: EdgeInsets.all(10.sp),
-              //               child: Row(
-              //                 children: [
-              //                   GestureDetector(
-              //                     onTap: () {
-              //                       Navigator.push(
-              //                         context,
-              //                         MaterialPageRoute(
-              //                           builder: (context) => ParkingItemScreen(
-              //                             idParking: apiData[i]
-              //                                 .id
-              //                                 .toString(), // Truyền thông tin sản phẩm
-              //                             name: apiData[i].name,
-              //                             address: apiData[i].address,
-              //                             image: apiData[i].image,
-              //                             lat: apiData[i].lat,
-              //                             long: apiData[i].long,
-              //                             slot: apiData[i].slot,
-              //                             max: apiData[i].max,
-              //                           ),
-              //                         ),
-              //                       );
-              //                     },
-              //                     child: Container(
-              //                       padding: EdgeInsets.symmetric(
-              //                           horizontal: 12.w, vertical: 8.h),
-              //                       decoration: BoxDecoration(
-              //                         color: Colors.blue,
-              //                         borderRadius: BorderRadius.circular(5),
-              //                       ),
-              //                       child: Text(
-              //                         "Chi tiết",
-              //                         style: TextStyle(color: Colors.white),
-              //                       ),
-              //                     ),
-              //                   ),
-              //                   SizedBox(
-              //                     width: 10.w,
-              //                   ),
-              //                   GestureDetector(
-              //                     onTap: () {
-              //                       Navigator.push(
-              //                         context,
-              //                         MaterialPageRoute(
-              //                           builder: (context) => DirectionParking(
-              //                             idParking: apiData[i]
-              //                                 .id
-              //                                 .toString(), // Truyền thông tin sản phẩm
-              //                             lat: apiData[i].lat,
-              //                             long: apiData[i].long,
-              //                           ),
-              //                         ),
-              //                       );
-              //                     },
-              //                     child: Container(
-              //                       padding: EdgeInsets.symmetric(
-              //                           horizontal: 12.w, vertical: 8.h),
-              //                       decoration: BoxDecoration(
-              //                         color: Colors.blue,
-              //                         borderRadius: BorderRadius.circular(5),
-              //                       ),
-              //                       child: Text(
-              //                         "Chỉ đường",
-              //                         style: TextStyle(color: Colors.white),
-              //                       ),
-              //                     ),
-              //                   ),
-              //                 ],
-              //               ),
-              //             ),
-              //           ],
-              //         ),
-              //       ),
-              //     ),
-              //     // ĐANG LỖI CHỖ NÀY NHÉ
-              //     LatLng(apiData[i].lat, apiData[i].long),
-              //   );
-              // },
-            ),
-
-            // onTap: () {
-            //   _customInfoWindowController.addInfoWindow!(
-            //     Container(
-            //       height: 200.h,
-            //       width: 200.w,
-            //       decoration: BoxDecoration(
-            //         color: Colors.white,
-            //         border: Border.all(color: ColorsConstants.kActiveColor),
-            //         borderRadius: BorderRadius.circular(10),
-            //       ),
-            //       child: SingleChildScrollView(
-            //         child: Column(
-            //           children: [
-            //             Container(
-            //               width: 300.w,
-            //               height: 120.h,
-            //               decoration: BoxDecoration(
-            //                 image: DecorationImage(
-            //                   image: NetworkImage(apiData[i].image),
-            //                   fit: BoxFit.fitWidth,
-            //                   filterQuality: FilterQuality.high,
-            //                 ),
-            //                 borderRadius: BorderRadius.all(
-            //                   Radius.circular(10.0),
-            //                 ),
-            //               ),
-            //             ),
-            //             Padding(
-            //               padding: EdgeInsets.all(10.sp),
-            //               child: Row(
-            //                 children: [
-            //                   SizedBox(
-            //                     width: 150.w,
-            //                     child: Text(
-            //                       apiData[i].name,
-            //                       maxLines: 2,
-            //                       overflow: TextOverflow.ellipsis,
-            //                       style: TextStyle(
-            //                           fontSize: 14.sp, color: Colors.black),
-            //                     ),
-            //                   ),
-            //                 ],
-            //               ),
-            //             ),
-            //             Padding(
-            //               padding: EdgeInsets.all(10.sp),
-            //               child: Row(
-            //                 children: [
-            //                   GestureDetector(
-            //                     onTap: () {
-            //                       Navigator.push(
-            //                         context,
-            //                         MaterialPageRoute(
-            //                           builder: (context) => ParkingItemScreen(
-            //                             idParking: apiData[i]
-            //                                 .id
-            //                                 .toString(), // Truyền thông tin sản phẩm
-            //                             name: apiData[i].name,
-            //                             address: apiData[i].address,
-            //                             image: apiData[i].image,
-            //                             lat: apiData[i].lat,
-            //                             long: apiData[i].long,
-            //                             slot: apiData[i].slot,
-            //                             max: apiData[i].max,
-            //                           ),
-            //                         ),
-            //                       );
-            //                     },
-            //                     child: Container(
-            //                       padding: EdgeInsets.symmetric(
-            //                           horizontal: 12.w, vertical: 8.h),
-            //                       decoration: BoxDecoration(
-            //                         color: Colors.blue,
-            //                         borderRadius: BorderRadius.circular(5),
-            //                       ),
-            //                       child: Text(
-            //                         "Chi tiết",
-            //                         style: TextStyle(color: Colors.white),
-            //                       ),
-            //                     ),
-            //                   ),
-            //                   SizedBox(
-            //                     width: 10.w,
-            //                   ),
-            //                   GestureDetector(
-            //                     onTap: () {
-            //                       Navigator.push(
-            //                         context,
-            //                         MaterialPageRoute(
-            //                           builder: (context) => DirectionParking(
-            //                             idParking: apiData[i]
-            //                                 .id
-            //                                 .toString(), // Truyền thông tin sản phẩm
-            //                             lat: apiData[i].lat,
-            //                             long: apiData[i].long,
-            //                           ),
-            //                         ),
-            //                       );
-            //                     },
-            //                     child: Container(
-            //                       padding: EdgeInsets.symmetric(
-            //                           horizontal: 12.w, vertical: 8.h),
-            //                       decoration: BoxDecoration(
-            //                         color: Colors.blue,
-            //                         borderRadius: BorderRadius.circular(5),
-            //                       ),
-            //                       child: Text(
-            //                         "Chỉ đường",
-            //                         style: TextStyle(color: Colors.white),
-            //                       ),
-            //                     ),
-            //                   ),
-            //                 ],
-            //               ),
-            //             ),
-            //           ],
-            //         ),
-            //       ),
-            //     ),
-            //     LatLng(apiData[i].lat, apiData[i].long),
-            //   );
-            // },
-          ),
-        );
-        setState(() {});
       }
     } catch (e) {
       print(">>>>>>>>>>>>>>>>>>>>>>>Error fetching data from the API: $e");
@@ -378,11 +141,14 @@ class _MapHomeState extends State<MapHome> {
           children: [
             VietmapGL(
               onMapCreated: _onMapCreated,
+              myLocationEnabled: true,
+              compassEnabled: false,
+              trackCameraPosition: true,
               initialCameraPosition: const CameraPosition(
                   target: LatLng(15.975295, 108.252345), zoom: 10),
               onStyleLoadedCallback: _onStyleLoadedCallback,
-              myLocationRenderMode: MyLocationRenderMode.GPS,
-              myLocationTrackingMode: MyLocationTrackingMode.TrackingGPS,
+              // myLocationRenderMode: MyLocationRenderMode.GPS,
+              // myLocationTrackingMode: MyLocationTrackingMode.TrackingGPS,
               onMapRenderedCallback: () {
                 mapController?.animateCamera(CameraUpdate.newCameraPosition(
                     CameraPosition(
@@ -390,127 +156,289 @@ class _MapHomeState extends State<MapHome> {
                         zoom: 10,
                         tilt: 60)));
               },
-              // onUserLocationUpdated: (location) {
-              //   print(location);
-              // },
+              onUserLocationUpdated: (location) {
+                setState(() {
+                  userLocation = location;
+                });
+              },
               styleString:
                   "https://maps.vietmap.vn/api/maps/light/styles.json?apikey=$VIETMAP_API_KEY",
+              onMapClick: (point, coordinates) async {
+                var data =
+                    await mapController?.queryRenderedFeatures(point: point);
+                log(data.toString());
+              },
             ),
             mapController == null
                 ? SizedBox.shrink()
-                : StaticMarkerLayer(
+                : MarkerLayer(
                     ignorePointer: false,
                     mapController: mapController!,
                     markers: myMarkers,
-
-                    //  [
-                    //     Marker(
-                    //       width: 50,
-                    //       height: 50,
-                    //       child: GestureDetector(
-                    //         onTap: () {
-                    //           print("CLICK");
-                    //         },
-                    //         child: Image.asset(
-                    //           "assets/images/target.png",
-                    //           height: 50.h,
-                    //         ),
-                    //       ),
-                    //       latLng: LatLng(15.975295, 108.252345),
-                    //     ),
-                    //   ]
                   ),
           ],
         ),
         // LIST BUTTON (CURRENT POSITION, VỊ TRÍ GẦN ĐÂY, CẤM ĐẬU XE.)
-        floatingActionButton: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          height: 40,
-                          child: FloatingActionButton.extended(
-                            onPressed: () {},
-                            label: Text(
-                              "Cấm đổ xe",
-                              style: TextStyle(
-                                  color: ColorsConstants.kActiveColor),
-                            ),
-                            icon: Icon(
-                              Icons.car_crash,
-                              color: ColorsConstants.kActiveColor,
-                            ),
-                            backgroundColor: ColorsConstants.kBackgroundColor,
+        floatingActionButton: _listFloatActionButton(),
+      ),
+    );
+  }
+
+  Column _listFloatActionButton() {
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        height: 30,
+                        child: FloatingActionButton.extended(
+                          onPressed: () {},
+                          label: Text(
+                            "Cấm đổ xe",
+                            style: TextStyle(
+                                color: ColorsConstants.kActiveColor),
                           ),
-                        ),
-                        SizedBox(
-                          width: 5.w,
-                        ),
-                        SizedBox(
-                          height: 40,
-                          child: FloatingActionButton.extended(
-                            onPressed: () {},
-                            label: Text(
-                              "Ngậm nước",
-                              style: TextStyle(
-                                  color: ColorsConstants.kActiveColor),
-                            ),
-                            icon: Icon(
-                              Icons.car_crash,
-                              color: ColorsConstants.kActiveColor,
-                            ),
-                            backgroundColor: ColorsConstants.kBackgroundColor,
+                          icon: Icon(
+                            Icons.car_crash,
+                            color: ColorsConstants.kActiveColor,
+                            size: 20,
                           ),
+                          backgroundColor: ColorsConstants.kBackgroundColor,
                         ),
-                        SizedBox(
-                          width: 5.w,
-                        ),
-                        SizedBox(
-                          height: 40,
-                          child: FloatingActionButton.extended(
-                            onPressed: () {
-                              getParkingAPI();
-                            },
-                            label: Text(
-                              "Bãi đổ xe gần đây",
-                              style: TextStyle(
-                                  color: ColorsConstants.kActiveColor),
-                            ),
-                            icon: Icon(
-                              Icons.car_crash,
-                              color: ColorsConstants.kActiveColor,
-                            ),
-                            backgroundColor: ColorsConstants.kBackgroundColor,
+                      ),
+                      SizedBox(
+                        width: 5.w,
+                      ),
+                      SizedBox(
+                        height: 30,
+                        child: FloatingActionButton.extended(
+                          onPressed: () {},
+                          label: Text(
+                            "Ngậm nước",
+                            style: TextStyle(
+                                color: ColorsConstants.kActiveColor),
                           ),
+                          icon: Icon(
+                            Icons.car_crash,
+                            color: ColorsConstants.kActiveColor,
+                            size: 20,
+                          ),
+                          backgroundColor: ColorsConstants.kBackgroundColor,
                         ),
-                      ],
-                    ),
+                      ),
+                      SizedBox(
+                        width: 5.w,
+                      ),
+                      SizedBox(
+                        height: 30,
+                        child: FloatingActionButton.extended(
+                          onPressed: () {
+                            addLocationParking();
+                          },
+                          label: Text(
+                            "Bãi đổ xe gần đây",
+                            style: TextStyle(
+                                color: ColorsConstants.kActiveColor),
+                          ),
+                          icon: Icon(
+                            Icons.car_crash,
+                            color: ColorsConstants.kActiveColor,
+                            size: 20,
+                          ),
+                          backgroundColor: ColorsConstants.kBackgroundColor,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(
-                  width: 2.w,
-                ),
-                SizedBox(
+              ),
+              SizedBox(
+                width: 2.w,
+              ),
+              SizedBox(
                   height: 40,
                   child: FloatingActionButton(
+                    // onPressed: () {
+                    // },
+                    // child: Icon(
+                    //   Icons.location_searching,
+                    //   color: ColorsConstants.kActiveColor,
+                    // ),
+                    // backgroundColor: ColorsConstants.kBackgroundColor,
                     onPressed: () {
+                      mapController?.recenter();
                       getCurrentPosion();
                     },
                     child: Icon(
                       Icons.location_searching,
-                      color: ColorsConstants.kActiveColor,
+                      color: ColorsConstants.kBackgroundColor,
                     ),
-                    backgroundColor: ColorsConstants.kBackgroundColor,
-                  ),
+                    backgroundColor: ColorsConstants.kActiveColor,
+                  )),
+            ],
+          )
+        ],
+      );
+  }
+}
+
+class _bottomSheetParking extends StatelessWidget {
+  const _bottomSheetParking({
+    super.key,
+    required this.apiData,
+    required this.i,
+  });
+
+  final List<Station> apiData;
+  final int i;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 400.h,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: 200.h,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(apiData[i].image),
+                  fit: BoxFit.fitWidth,
+                  filterQuality: FilterQuality.high,
                 ),
-              ],
-            )
+                borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+              child: Column(
+                children: [
+                  SizedBox(
+                    child: Text(
+                      apiData[i].name,
+                      style: TextStyle(
+                          fontSize: 20.sp,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  SizedBox(
+                    child: Text(
+                      apiData[i].address,
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.all(10.sp),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ParkingItemScreen(
+                            idParking: apiData[i]
+                                .id
+                                .toString(), // Truyền thông tin sản phẩm
+                            name: apiData[i].name,
+                            address: apiData[i].address,
+                            image: apiData[i].image,
+                            lat: apiData[i].lat,
+                            long: apiData[i].long,
+                            slot: apiData[i].slot,
+                            max: apiData[i].max,
+                          ),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary:
+                          ColorsConstants.kActiveColor, // Sử dụng màu #567DF4
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      fixedSize:
+                          Size.fromHeight(50), // Điều chỉnh chiều cao ở đây
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.info_outline,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          "Chi tiết",
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 20.sp),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 6.w,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DirectionParking(
+                            idParking: apiData[i]
+                                .id
+                                .toString(), // Truyền thông tin sản phẩm
+                            lat: apiData[i].lat,
+                            long: apiData[i].long,
+                          ),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      primary:
+                          ColorsConstants.kActiveColor, // Sử dụng màu #567DF4
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      fixedSize:
+                          Size.fromHeight(50), // Điều chỉnh chiều cao ở đây
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.directions,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          "Chỉ đường",
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 20.sp),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
