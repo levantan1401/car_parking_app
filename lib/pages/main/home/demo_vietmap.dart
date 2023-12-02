@@ -22,6 +22,7 @@ class _DemoVietMapState extends State<DemoVietMap> {
       _mapController = controller;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,8 +32,8 @@ class _DemoVietMapState extends State<DemoVietMap> {
             IconButton(
                 tooltip: 'Xem ví dụ chi tiết',
                 onPressed: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => MapDemo()));
+                  // Navigator.push(
+                  //     context, MaterialPageRoute(builder: (_) => MapDemo()));
                 },
                 icon: Icon(Icons.more))
           ],
@@ -42,7 +43,8 @@ class _DemoVietMapState extends State<DemoVietMap> {
           myLocationEnabled: true,
           // myLocationTrackingMode: MyLocationTrackingMode.TrackingCompass,
           // myLocationRenderMode: MyLocationRenderMode.NORMAL
-          styleString: 'https://maps.vietmap.vn/api/maps/light/styles.json?apikey=$VIETMAP_API_KEY',
+          styleString:
+              'https://maps.vietmap.vn/api/maps/light/styles.json?apikey=$VIETMAP_API_KEY',
           trackCameraPosition: true,
           onMapCreated: _onMapCreated,
           compassEnabled: false,

@@ -113,127 +113,127 @@ class _MapHomeState extends State<MapHome> {
                 height: 50.h,
               ),
               onTap: () {
-                _customInfoWindowController.addInfoWindow!(
-                  Container(
-                    height: 200.h,
-                    width: 200.w,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(color: ColorsConstants.kActiveColor),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Container(
-                            width: 300.w,
-                            height: 120.h,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(apiData[i].image),
-                                fit: BoxFit.fitWidth,
-                                filterQuality: FilterQuality.high,
-                              ),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10.0),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(10.sp),
-                            child: Row(
-                              children: [
-                                SizedBox(
-                                  width: 150.w,
-                                  child: Text(
-                                    apiData[i].name,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 14.sp, color: Colors.black),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(10.sp),
-                            child: Row(
-                              children: [
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => ParkingItemScreen(
-                                          idParking: apiData[i]
-                                              .id
-                                              .toString(), // Truyền thông tin sản phẩm
-                                          name: apiData[i].name,
-                                          address: apiData[i].address,
-                                          image: apiData[i].image,
-                                          lat: apiData[i].lat,
-                                          long: apiData[i].long,
-                                          slot: apiData[i].slot,
-                                          max: apiData[i].max,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 12.w, vertical: 8.h),
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Text(
-                                      "Chi tiết",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 10.w,
-                                ),
-                                GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => DirectionParking(
-                                          idParking: apiData[i]
-                                              .id
-                                              .toString(), // Truyền thông tin sản phẩm
-                                          lat: apiData[i].lat,
-                                          long: apiData[i].long,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 12.w, vertical: 8.h),
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue,
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Text(
-                                      "Chỉ đường",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  // ĐANG LỖI CHỖ NÀY NHÉ
-                  LatLng(apiData[i].lat, apiData[i].long),
-                );
+                // _customInfoWindowController.addInfoWindow!(
+                //   Container(
+                //     height: 200.h,
+                //     width: 200.w,
+                //     decoration: BoxDecoration(
+                //       color: Colors.white,
+                //       border: Border.all(color: ColorsConstants.kActiveColor),
+                //       borderRadius: BorderRadius.circular(10),
+                //     ),
+                //     child: SingleChildScrollView(
+                //       child: Column(
+                //         children: [
+                //           Container(
+                //             width: 300.w,
+                //             height: 120.h,
+                //             decoration: BoxDecoration(
+                //               image: DecorationImage(
+                //                 image: NetworkImage(apiData[i].image),
+                //                 fit: BoxFit.fitWidth,
+                //                 filterQuality: FilterQuality.high,
+                //               ),
+                //               borderRadius: BorderRadius.all(
+                //                 Radius.circular(10.0),
+                //               ),
+                //             ),
+                //           ),
+                //           Padding(
+                //             padding: EdgeInsets.all(10.sp),
+                //             child: Row(
+                //               children: [
+                //                 SizedBox(
+                //                   width: 150.w,
+                //                   child: Text(
+                //                     apiData[i].name,
+                //                     maxLines: 2,
+                //                     overflow: TextOverflow.ellipsis,
+                //                     style: TextStyle(
+                //                         fontSize: 14.sp, color: Colors.black),
+                //                   ),
+                //                 ),
+                //               ],
+                //             ),
+                //           ),
+                //           Padding(
+                //             padding: EdgeInsets.all(10.sp),
+                //             child: Row(
+                //               children: [
+                //                 GestureDetector(
+                //                   onTap: () {
+                //                     Navigator.push(
+                //                       context,
+                //                       MaterialPageRoute(
+                //                         builder: (context) => ParkingItemScreen(
+                //                           idParking: apiData[i]
+                //                               .id
+                //                               .toString(), // Truyền thông tin sản phẩm
+                //                           name: apiData[i].name,
+                //                           address: apiData[i].address,
+                //                           image: apiData[i].image,
+                //                           lat: apiData[i].lat,
+                //                           long: apiData[i].long,
+                //                           slot: apiData[i].slot,
+                //                           max: apiData[i].max,
+                //                         ),
+                //                       ),
+                //                     );
+                //                   },
+                //                   child: Container(
+                //                     padding: EdgeInsets.symmetric(
+                //                         horizontal: 12.w, vertical: 8.h),
+                //                     decoration: BoxDecoration(
+                //                       color: Colors.blue,
+                //                       borderRadius: BorderRadius.circular(5),
+                //                     ),
+                //                     child: Text(
+                //                       "Chi tiết",
+                //                       style: TextStyle(color: Colors.white),
+                //                     ),
+                //                   ),
+                //                 ),
+                //                 SizedBox(
+                //                   width: 10.w,
+                //                 ),
+                //                 GestureDetector(
+                //                   onTap: () {
+                //                     Navigator.push(
+                //                       context,
+                //                       MaterialPageRoute(
+                //                         builder: (context) => DirectionParking(
+                //                           idParking: apiData[i]
+                //                               .id
+                //                               .toString(), // Truyền thông tin sản phẩm
+                //                           lat: apiData[i].lat,
+                //                           long: apiData[i].long,
+                //                         ),
+                //                       ),
+                //                     );
+                //                   },
+                //                   child: Container(
+                //                     padding: EdgeInsets.symmetric(
+                //                         horizontal: 12.w, vertical: 8.h),
+                //                     decoration: BoxDecoration(
+                //                       color: Colors.blue,
+                //                       borderRadius: BorderRadius.circular(5),
+                //                     ),
+                //                     child: Text(
+                //                       "Chỉ đường",
+                //                       style: TextStyle(color: Colors.white),
+                //                     ),
+                //                   ),
+                //                 ),
+                //               ],
+                //             ),
+                //           ),
+                //         ],
+                //       ),
+                //     ),
+                //   ),
+                //   // ĐANG LỖI CHỖ NÀY NHÉ
+                //   LatLng(apiData[i].lat, apiData[i].long),
+                // );
               },
             ),
 

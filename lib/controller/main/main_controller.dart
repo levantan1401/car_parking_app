@@ -7,6 +7,8 @@ import 'package:giuaki_map_location/pages/main/home/map_home.dart';
 import 'package:giuaki_map_location/pages/main/list_parking/list_parking.dart';
 import 'package:giuaki_map_location/pages/main/profile/profile_screen.dart';
 
+import '../../pages/main/home/map_demo.dart';
+
 class MainController extends GetxController {
   MainController();
   late PageController pageController;
@@ -18,7 +20,7 @@ class MainController extends GetxController {
   List<Widget> pages = [
     // HomePage(),
     // DemoVietMap(),
-    MapHome(),
+    VietmapExampleMapView(),
     ListParkingScreen(),
     ProfileScreen(),
   ];
