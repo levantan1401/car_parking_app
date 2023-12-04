@@ -20,7 +20,7 @@ class MainController extends GetxController {
   List<Widget> pages = [
     // HomePage(),
     // DemoVietMap(),
-    VietmapExampleMapView(),
+    VietMapNavigationScreen(),
     ListParkingScreen(),
     ProfileScreen(),
   ];

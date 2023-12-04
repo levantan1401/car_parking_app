@@ -30,7 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  
+  vietmap_flutter_navigation:
   get: ^4.6.1
   get_storage: ^2.0.3
   # google_maps_flutter: ^2.2.1
@@ -51,6 +51,13 @@ dependencies:
 
   # VIETMAP:
   vietmap_flutter_gl: ^1.2.7
+  flutter_svg: ^2.0.9
+
+  dartz: ^0.10.1
+  dio: ^5.2.1+1
+  flutter_easyloading: ^3.0.5
+  flutter_typeahead: ^4.3.1
+  intl: ^0.18.1
 
 
 
