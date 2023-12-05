@@ -10,6 +10,7 @@ import 'package:giuaki_map_location/constants/api_google_key.dart';
 import 'package:giuaki_map_location/constants/color_constants.dart';
 import 'package:giuaki_map_location/models/station.dart';
 import 'package:giuaki_map_location/pages/main/home/direction_parking.dart';
+import 'package:giuaki_map_location/pages/main/home/map_demo.dart';
 import 'package:giuaki_map_location/pages/main/list_parking/detail_parking_screen.dart';
 import 'package:giuaki_map_location/services/place_service.dart';
 import 'package:vietmap_flutter_gl/vietmap_flutter_gl.dart';
@@ -146,7 +147,7 @@ class _MapHomeState extends State<MapHome> {
               trackCameraPosition: true,
               initialCameraPosition: const CameraPosition(
                   target: LatLng(15.975295, 108.252345), zoom: 10),
-              onStyleLoadedCallback: _onStyleLoadedCallback,
+              // onStyleLoadedCallback: _onStyleLoadedCallback,
               // myLocationRenderMode: MyLocationRenderMode.GPS,
               // myLocationTrackingMode: MyLocationTrackingMode.TrackingGPS,
               onMapRenderedCallback: () {
@@ -186,105 +187,101 @@ class _MapHomeState extends State<MapHome> {
 
   Column _listFloatActionButton() {
     return Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        height: 30,
-                        child: FloatingActionButton.extended(
-                          onPressed: () {},
-                          label: Text(
-                            "Cấm đổ xe",
-                            style: TextStyle(
-                                color: ColorsConstants.kActiveColor),
-                          ),
-                          icon: Icon(
-                            Icons.car_crash,
-                            color: ColorsConstants.kActiveColor,
-                            size: 20,
-                          ),
-                          backgroundColor: ColorsConstants.kBackgroundColor,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Row(
+          children: [
+            
+            SizedBox(
+              width: 10.w,
+            ),
+            SizedBox(
+              height: 40,
+              child: FloatingActionButton(
+                onPressed: () {
+                  mapController?.recenter();
+                  getCurrentPosion();
+                },
+                child: Icon(
+                  Icons.location_searching,
+                  color: ColorsConstants.kBackgroundColor,
+                ),
+                backgroundColor: ColorsConstants.kActiveColor,
+              ),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    // ĐỒ XE GẦN ĐÂY
+                    SizedBox(
+                      height: 30,
+                      child: FloatingActionButton.extended(
+                        onPressed: () {
+                          addLocationParking();
+                        },
+                        label: Text(
+                          "Bãi đổ xe gần đây",
+                          style: TextStyle(color: ColorsConstants.kActiveColor),
                         ),
-                      ),
-                      SizedBox(
-                        width: 5.w,
-                      ),
-                      SizedBox(
-                        height: 30,
-                        child: FloatingActionButton.extended(
-                          onPressed: () {},
-                          label: Text(
-                            "Ngậm nước",
-                            style: TextStyle(
-                                color: ColorsConstants.kActiveColor),
-                          ),
-                          icon: Icon(
-                            Icons.car_crash,
-                            color: ColorsConstants.kActiveColor,
-                            size: 20,
-                          ),
-                          backgroundColor: ColorsConstants.kBackgroundColor,
+                        icon: Icon(
+                          Icons.car_crash,
+                          color: ColorsConstants.kActiveColor,
+                          size: 20,
                         ),
+                        backgroundColor: ColorsConstants.kBackgroundColor,
                       ),
-                      SizedBox(
-                        width: 5.w,
-                      ),
-                      SizedBox(
-                        height: 30,
-                        child: FloatingActionButton.extended(
-                          onPressed: () {
-                            addLocationParking();
-                          },
-                          label: Text(
-                            "Bãi đổ xe gần đây",
-                            style: TextStyle(
-                                color: ColorsConstants.kActiveColor),
-                          ),
-                          icon: Icon(
-                            Icons.car_crash,
-                            color: ColorsConstants.kActiveColor,
-                            size: 20,
-                          ),
-                          backgroundColor: ColorsConstants.kBackgroundColor,
+                    ),
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    // CẤM ĐỔ XE
+                    SizedBox(
+                      height: 30,
+                      child: FloatingActionButton.extended(
+                        onPressed: () {},
+                        label: Text(
+                          "Cấm đổ xe",
+                          style: TextStyle(color: ColorsConstants.kActiveColor),
                         ),
+                        icon: Icon(
+                          Icons.car_crash,
+                          color: ColorsConstants.kActiveColor,
+                          size: 20,
+                        ),
+                        backgroundColor: ColorsConstants.kBackgroundColor,
                       ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    // NGẬP NƯỚC
+                    SizedBox(
+                      height: 30,
+                      child: FloatingActionButton.extended(
+                        onPressed: () {},
+                        label: Text(
+                          "Ngậm nước",
+                          style: TextStyle(color: ColorsConstants.kActiveColor),
+                        ),
+                        icon: Icon(
+                          Icons.car_crash,
+                          color: ColorsConstants.kActiveColor,
+                          size: 20,
+                        ),
+                        backgroundColor: ColorsConstants.kBackgroundColor,
+                      ),
+                    ),
+                    
+                  ],
                 ),
               ),
-              SizedBox(
-                width: 2.w,
-              ),
-              SizedBox(
-                  height: 40,
-                  child: FloatingActionButton(
-                    // onPressed: () {
-                    // },
-                    // child: Icon(
-                    //   Icons.location_searching,
-                    //   color: ColorsConstants.kActiveColor,
-                    // ),
-                    // backgroundColor: ColorsConstants.kBackgroundColor,
-                    onPressed: () {
-                      mapController?.recenter();
-                      getCurrentPosion();
-                    },
-                    child: Icon(
-                      Icons.location_searching,
-                      color: ColorsConstants.kBackgroundColor,
-                    ),
-                    backgroundColor: ColorsConstants.kActiveColor,
-                  )),
-            ],
-          )
-        ],
-      );
+            ),
+          ],
+        )
+      ],
+    );
   }
 }
 
@@ -402,12 +399,9 @@ class _bottomSheetParking extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => DirectionParking(
-                            idParking: apiData[i]
-                                .id
-                                .toString(), // Truyền thông tin sản phẩm
+                          builder: (context) => VietMapNavigationScreen(
                             lat: apiData[i].lat,
-                            long: apiData[i].long,
+                            lng: apiData[i].long,
                           ),
                         ),
                       );

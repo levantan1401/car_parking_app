@@ -32,7 +32,7 @@ class _DemoVietMapState extends State<DemoVietMap> {
                 tooltip: 'Xem ví dụ chi tiết',
                 onPressed: () {
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => MapDemo()));
+                      context, MaterialPageRoute(builder: (_) => VietMapNavigationScreen()));
                 },
                 icon: Icon(Icons.more))
           ],

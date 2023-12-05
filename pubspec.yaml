@@ -52,12 +52,19 @@ dependencies:
   # VIETMAP:
   vietmap_flutter_gl: ^1.2.7
   vietmap_flutter_navigation: ^1.4.1
+  dartz: ^0.10.1
+  dio: ^5.2.1+1
+  flutter_typeahead: ^4.3.1
+  intl: ^0.18.1
 
   # IMAGE SVG:
   flutter_svg: ^2.0.9
 
   #LOADDING:
   flutter_easyloading: ^3.0.5
+
+  #ANIMATION: 
+  diamond_bottom_bar: ^1.0.0
 
 dev_dependencies:
   flutter_test:
