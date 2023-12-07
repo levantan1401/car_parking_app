@@ -27,6 +27,8 @@ class _MapHomeState extends State<MapHome> {
   List<Station> apiData = List.empty();
   VietmapController? mapController;
   UserLocation? userLocation;
+  late CameraPosition? cameraPosition;
+  Location? _location;
   final CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
   final List<Marker> myMarkers = [];
@@ -35,21 +37,43 @@ class _MapHomeState extends State<MapHome> {
 
   @override
   void initState() {
+    _init();
     super.initState();
     getParkingAPI();
+  }
+
+  _init() async {
+    _location = Location();
+
+    try {
+      setState(() {});
+      getUserLocation().then(
+        (value) => {
+          cameraPosition = CameraPosition(
+              target: LatLng(value.latitude, value.longitude), zoom: 14),
+        },
+      );
+    } catch (e) {
+      print(e);
+    } finally {
+      cameraPosition = const CameraPosition(
+        // target: LatLng(15.975295, 108.252345), // TRƯỜNG
+        target: LatLng(16.071650, 108.220629), // LEDUAN: ,
+        zoom: 14,
+      );
+    }
   }
 
   _onMapCreated(VietmapController controller) {
     mapController = controller;
   }
 
-  _onStyleLoadedCallback() {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text("Style loaded :)"),
-      backgroundColor: Theme.of(context).primaryColor,
-      duration: Duration(seconds: 1),
-    ));
-  }
+  // _onStyleLoadedCallback() {
+  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //     backgroundColor: Theme.of(context).primaryColor,
+  //     duration: Duration(seconds: 1),
+  //   ));
+  // }
 
   _markerWidget(IconData icon) {
     return Icon(icon, color: Colors.red, size: 50);
@@ -65,6 +89,12 @@ class _MapHomeState extends State<MapHome> {
       print('Error: $error');
     });
     return await Geolocator.getCurrentPosition();
+  }
+
+  reNewLocation() {
+    setState(() {
+      myMarkers.clear();
+    });
   }
 
   addLocationParking() async {
@@ -104,6 +134,10 @@ class _MapHomeState extends State<MapHome> {
     }
   }
 
+  addLineNoParking() {
+
+  }
+
   getCurrentPosion() {
     getUserLocation().then(
       (value) async {
@@ -125,10 +159,7 @@ class _MapHomeState extends State<MapHome> {
     try {
       final PlaceService apiService = PlaceService();
       apiData = await apiService.getStations();
-      for (int i = 0; i < apiData.length; i++) {
-        print(">>>>>>>>>>>>>> Station NEW:  ${apiData[i].lat}");
-        print(">>>>>>>>>>>>STATION: ${apiData}");
-      }
+      for (int i = 0; i < apiData.length; i++) {}
     } catch (e) {
       print(">>>>>>>>>>>>>>>>>>>>>>>Error fetching data from the API: $e");
     }
@@ -145,23 +176,19 @@ class _MapHomeState extends State<MapHome> {
               myLocationEnabled: true,
               compassEnabled: false,
               trackCameraPosition: true,
-              initialCameraPosition: const CameraPosition(
-                  target: LatLng(15.975295, 108.252345), zoom: 10),
+              initialCameraPosition: cameraPosition!,
               // onStyleLoadedCallback: _onStyleLoadedCallback,
               // myLocationRenderMode: MyLocationRenderMode.GPS,
               // myLocationTrackingMode: MyLocationTrackingMode.TrackingGPS,
               onMapRenderedCallback: () {
-                mapController?.animateCamera(CameraUpdate.newCameraPosition(
-                    CameraPosition(
-                        target: LatLng(15.975295, 108.252345),
-                        zoom: 10,
-                        tilt: 60)));
+                mapController?.animateCamera(
+                    CameraUpdate.newCameraPosition(cameraPosition!));
               },
-              onUserLocationUpdated: (location) {
-                setState(() {
-                  userLocation = location;
-                });
-              },
+              // onUserLocationUpdated: (location) {
+              //   setState(() {
+              //     userLocation = location;
+              //   });
+              // },
               styleString:
                   "https://maps.vietmap.vn/api/maps/light/styles.json?apikey=$VIETMAP_API_KEY",
               onMapClick: (point, coordinates) async {
@@ -191,7 +218,6 @@ class _MapHomeState extends State<MapHome> {
       children: [
         Row(
           children: [
-            
             SizedBox(
               width: 10.w,
             ),
@@ -219,6 +245,7 @@ class _MapHomeState extends State<MapHome> {
                       height: 30,
                       child: FloatingActionButton.extended(
                         onPressed: () {
+                          reNewLocation();
                           addLocationParking();
                         },
                         label: Text(
@@ -240,7 +267,10 @@ class _MapHomeState extends State<MapHome> {
                     SizedBox(
                       height: 30,
                       child: FloatingActionButton.extended(
-                        onPressed: () {},
+                        onPressed: () {
+                          reNewLocation();
+                          addLineNoParking();
+                        },
                         label: Text(
                           "Cấm đổ xe",
                           style: TextStyle(color: ColorsConstants.kActiveColor),
@@ -273,7 +303,6 @@ class _MapHomeState extends State<MapHome> {
                         backgroundColor: ColorsConstants.kBackgroundColor,
                       ),
                     ),
-                    
                   ],
                 ),
               ),
@@ -320,6 +349,8 @@ class _bottomSheetParking extends StatelessWidget {
                   SizedBox(
                     child: Text(
                       apiData[i].name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                           fontSize: 20.sp,
                           color: Colors.black,
@@ -332,6 +363,8 @@ class _bottomSheetParking extends StatelessWidget {
                   SizedBox(
                     child: Text(
                       apiData[i].address,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontSize: 16.sp,
                         color: Colors.black,
@@ -374,7 +407,7 @@ class _bottomSheetParking extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       fixedSize:
-                          Size.fromHeight(50), // Điều chỉnh chiều cao ở đây
+                          Size.fromHeight(40), // Điều chỉnh chiều cao ở đây
                     ),
                     child: Row(
                       children: [
@@ -386,7 +419,7 @@ class _bottomSheetParking extends StatelessWidget {
                         Text(
                           "Chi tiết",
                           style:
-                              TextStyle(color: Colors.white, fontSize: 20.sp),
+                              TextStyle(color: Colors.white, fontSize: 16.sp),
                         ),
                       ],
                     ),
@@ -399,7 +432,7 @@ class _bottomSheetParking extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => VietMapNavigationScreen(
+                          builder: (context) => DirectionParking(
                             lat: apiData[i].lat,
                             lng: apiData[i].long,
                           ),
@@ -413,7 +446,7 @@ class _bottomSheetParking extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                       ),
                       fixedSize:
-                          Size.fromHeight(50), // Điều chỉnh chiều cao ở đây
+                          Size.fromHeight(40), // Điều chỉnh chiều cao ở đây
                     ),
                     child: Row(
                       children: [
@@ -425,7 +458,7 @@ class _bottomSheetParking extends StatelessWidget {
                         Text(
                           "Chỉ đường",
                           style:
-                              TextStyle(color: Colors.white, fontSize: 20.sp),
+                              TextStyle(color: Colors.white, fontSize: 16.sp),
                         ),
                       ],
                     ),

@@ -53,7 +53,7 @@ class _MainScreenState extends State<MainScreen> {
       } else if (index == 1) {
         _selectedWidget = const MapHome();
       } else if (index == 2) {
-        _selectedWidget = VietMapNavigationScreen();
+        _selectedWidget = ProfileScreen();
       }
     });
   }

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:vietmap_flutter_navigation/embedded/controller.dart';
@@ -24,15 +25,6 @@ import '../../../direction/domain/repository/vietmap_api_repositories.dart';
 import '../../../direction/domain/usecase/get_location_from_latlng_usecase.dart';
 import '../../../direction/domain/usecase/get_place_detail_usecase.dart';
 
-// void main() {
-//   runApp(MaterialApp(
-//     builder: EasyLoading.init(),
-//     title: 'VietMap Navigation example app',
-//     home: VietMapNavigationScreen(),
-//     debugShowCheckedModeBanner: false,
-//   ));
-// }
-
 class VietMapNavigationScreen extends StatefulWidget {
   final lat;
   final lng;
@@ -51,7 +43,7 @@ class _VietMapNavigationScreenState extends State<VietMapNavigationScreen> {
   List<WayPoint> wayPoints = [
     WayPoint(name: "origin point", latitude: 16.047079, longitude: 108.206230),
     WayPoint(
-        name: "destination point", latitude: 16.071199, longitude: 108.220160), 
+        name: "destination point", latitude: 16.071199, longitude: 108.220160),
   ];
   Widget instructionImage = const SizedBox.shrink();
   String guideDirection = "";
@@ -106,18 +98,26 @@ class _VietMapNavigationScreenState extends State<VietMapNavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: () {
-              _controller?.removeAllMarkers();
-            },
-            child: const Icon(Icons.delete),
-          ),
-          FloatingActionButton(
-              child: const Icon(Icons.mark_email_read), onPressed: () async {}),
-        ],
+      floatingActionButton: Padding(
+        padding: EdgeInsets.only(bottom: 80.h),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          
+          children: [
+            FloatingActionButton.extended(
+              onPressed: () {
+                _controller?.buildAndStartNavigation(
+                    wayPoints: wayPoints, profile: DrivingProfile.drivingTraffic);
+                setState(() {
+                  _isRunning = true;
+                });
+              },
+              label: Text("Bắt đầu"),
+              icon: Icon(Icons.directions),
+            ),
+            
+          ],
+        ),
       ),
       body: SafeArea(
         top: false,
@@ -132,6 +132,9 @@ class _VietMapNavigationScreenState extends State<VietMapNavigationScreen> {
               mapOptions: _navigationOption,
               onNewRouteSelected: (p0) async {
                 // log(p0.toString());
+              },
+              onMapCreated: (p0) async {
+                _controller = p0;
                 try {
                   wayPoints.clear();
                   var location = await Geolocator.getCurrentPosition();
@@ -146,14 +149,10 @@ class _VietMapNavigationScreenState extends State<VietMapNavigationScreen> {
                         latitude: widget.lat,
                         longitude: widget.lng));
                   }
-
                   _controller?.buildRoute(wayPoints: wayPoints);
                 } catch (e) {
                   print(e);
                 }
-              },
-              onMapCreated: (p0) {
-                _controller = p0;
               },
               onMapMove: () => _showRecenterButton(),
               onRouteBuilt: (p0) async {
@@ -161,7 +160,6 @@ class _VietMapNavigationScreenState extends State<VietMapNavigationScreen> {
                 //   EasyLoading.dismiss();
                 //   _isRouteBuilt = true;
                 // });
-                
               },
               onMapRendered: () async {
                 _controller?.setCenterIcon(
@@ -192,7 +190,7 @@ class _VietMapNavigationScreenState extends State<VietMapNavigationScreen> {
                 var data =
                     await GetLocationFromLatLngUseCase(VietmapApiRepositories())
                         .call(LocationPoint(
-                            lat: widget.lat ?? 0, long: widget.lng ?? 0));
+                            lat: point?.latitude ?? 0, long: point?.longitude ?? 0));
                 EasyLoading.dismiss();
                 data.fold((l) {
                   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -260,11 +258,11 @@ class _VietMapNavigationScreenState extends State<VietMapNavigationScreen> {
                             name: 'destination',
                             latitude: location.latitude,
                             longitude: location.longitude));
-                        if (widget.lat != null) {
+                        if (data != null) {
                           wayPoints.add(WayPoint(
                               name: '',
-                              latitude: widget.lat,
-                              longitude: widget.lng));
+                              latitude: data?.lat,
+                              longitude: data?.lng));
                         }
                         _controller?.buildRoute(wayPoints: wayPoints);
                       },
@@ -387,11 +385,11 @@ class _VietMapNavigationScreenState extends State<VietMapNavigationScreen> {
               name: 'destination',
               latitude: location.latitude,
               longitude: location.longitude));
-          if (widget.lat != null) {
+          if (data != null) {
             wayPoints.add(WayPoint(
                 name: 'CAR PARKING',
-                latitude: widget.lat,
-                longitude: widget.lng));
+                latitude: data.lat,
+                longitude: data.lng));
           }
           _controller?.buildRoute(wayPoints: wayPoints);
           if (!mounted) return;
@@ -405,9 +403,9 @@ class _VietMapNavigationScreenState extends State<VietMapNavigationScreen> {
               name: 'destination',
               latitude: location.latitude,
               longitude: location.longitude));
-          if (widget.lat != null) {
+          if (data != null) {
             wayPoints.add(WayPoint(
-                name: '', latitude: widget.lat, longitude: widget.lng));
+                name: '', latitude: data.lat, longitude: data.lng));
           }
           _controller?.buildAndStartNavigation(
               wayPoints: wayPoints, profile: DrivingProfile.drivingTraffic);
