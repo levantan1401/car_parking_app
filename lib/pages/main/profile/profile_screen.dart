@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:giuaki_map_location/constants/color_constants.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -19,25 +20,23 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          onPressed: () {
-            // Add functionality to navigate or perform an action
-          },
-          icon: const Icon(
-            LineAwesomeIcons.angle_left,
-            color: Colors.black,
-          ),
-        ),
-        title: Padding(
-          padding: EdgeInsets.only(left: 100.0),
-          child: Text(
-            'Profile', // Use the tName property here
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 20,
-            ),
-            textAlign: TextAlign.left,
+        backgroundColor: ColorsConstants.kActiveColor,
+        // leading: IconButton(
+        //   onPressed: () {
+        //     // Add functionality to navigate or perform an action
+        //     // Navigator.pop(context);
+        //   },
+        //   icon: const Icon(
+        //     LineAwesomeIcons.angle_left,
+        //     color: Colors.black,
+        //   ),
+        // ),
+        centerTitle: true,
+        title: Text(
+          'Profile', // Use the tName property here
+          style: TextStyle(
+            color: ColorsConstants.kBackgroundColor,
+            fontSize: 20,
           ),
         ),
       ),

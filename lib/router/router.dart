@@ -6,6 +6,7 @@ import 'package:giuaki_map_location/controller/splash/splash_binding.dart';
 import 'package:giuaki_map_location/pages/main/auth/login/signin.dart';
 import 'package:giuaki_map_location/pages/main/home/direction_parking.dart';
 import 'package:giuaki_map_location/pages/main/home/home_page.dart';
+import 'package:giuaki_map_location/pages/main/home/map_home.dart';
 import 'package:giuaki_map_location/pages/main/list_parking/list_parking.dart';
 import 'package:giuaki_map_location/pages/main/profile/editprofile_sceent.dart';
 import 'package:giuaki_map_location/pages/main/profile/profile_screen.dart';
@@ -14,7 +15,7 @@ import 'package:giuaki_map_location/pages/onboarding/onboarding_screen.dart';
 import 'package:giuaki_map_location/pages/splash/splash_screen.dart';
 
 class Routers {
-  static const INITIAL = '/login';
+  static const INITIAL = '/main';
 
   static final routers = [
     GetPage(
@@ -65,7 +66,8 @@ class Routers {
         children: [
           GetPage(
             name: '/home',
-            page: () => HomePage(),
+            // page: () => HomePage(),
+            page: () => MapHome(),
           ),
           GetPage(
             name: '/list_parking',

@@ -12,22 +12,19 @@ class EditProfile extends StatelessWidget {
         backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {
-            Get.toNamed('/profile');
+            Navigator.pop(context);
           },
           icon: const Icon(
             LineAwesomeIcons.angle_left,
             color: Colors.black,
           ),
         ),
-        title: Padding(
-          padding: const EdgeInsets.only(left: 60.0),
-          child: Text(
-            'Edit Profile', // Use the tName property here
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 25,
-            ),
-            textAlign: TextAlign.left,
+        centerTitle: true,
+        title: Text(
+          'Edit Profile', // Use the tName property here
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 25,
           ),
         ),
       ),

@@ -25,16 +25,17 @@ import '../../../direction/domain/repository/vietmap_api_repositories.dart';
 import '../../../direction/domain/usecase/get_location_from_latlng_usecase.dart';
 import '../../../direction/domain/usecase/get_place_detail_usecase.dart';
 
-class DirectionParking extends StatefulWidget {
+class VietMapNavigationScreen extends StatefulWidget {
   final lat;
   final lng;
-  DirectionParking({super.key, required this.lat, required this.lng});
+  VietMapNavigationScreen({super.key, this.lat, this.lng});
 
   @override
-  State<DirectionParking> createState() => _DirectionParkingState();
+  State<VietMapNavigationScreen> createState() =>
+      _VietMapNavigationScreenState();
 }
 
-class _DirectionParkingState extends State<DirectionParking> {
+class _VietMapNavigationScreenState extends State<VietMapNavigationScreen> {
   MapNavigationViewController? _controller;
   late MapOptions _navigationOption;
   final _vietmapNavigationPlugin = VietMapNavigationPlugin();
@@ -56,9 +57,25 @@ class _DirectionParkingState extends State<DirectionParking> {
     super.initState();
 
     initialize(); // khởi tạo map
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      Geolocator.requestPermission();
-    });
+
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+    //   Geolocator.requestPermission();
+    // });
+    _ShowDirection();
+  }
+
+  _ShowDirection() async {
+    wayPoints.clear();
+    var location = await Geolocator.getCurrentPosition();
+
+    wayPoints.add(WayPoint(
+        name: 'destination',
+        latitude: location.latitude,
+        longitude: location.longitude));
+    if (widget.lat != null) {
+      wayPoints.add(WayPoint(
+          name: 'CAR PARKING', latitude: widget.lat, longitude: widget.lng));
+    }
   }
 
   Future<void> initialize() async {
@@ -82,15 +99,15 @@ class _DirectionParkingState extends State<DirectionParking> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: 90.h),
+        padding: EdgeInsets.only(bottom: 80.h),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
+          
           children: [
             FloatingActionButton.extended(
               onPressed: () {
                 _controller?.buildAndStartNavigation(
-                    wayPoints: wayPoints,
-                    profile: DrivingProfile.drivingTraffic);
+                    wayPoints: wayPoints, profile: DrivingProfile.drivingTraffic);
                 setState(() {
                   _isRunning = true;
                 });
@@ -98,6 +115,7 @@ class _DirectionParkingState extends State<DirectionParking> {
               label: Text("Bắt đầu"),
               icon: Icon(Icons.directions),
             ),
+            
           ],
         ),
       ),
@@ -116,6 +134,7 @@ class _DirectionParkingState extends State<DirectionParking> {
                 // log(p0.toString());
               },
               onMapCreated: (p0) async {
+                _controller = p0;
                 try {
                   wayPoints.clear();
                   var location = await Geolocator.getCurrentPosition();
@@ -130,24 +149,54 @@ class _DirectionParkingState extends State<DirectionParking> {
                         latitude: widget.lat,
                         longitude: widget.lng));
                   }
-                  // _controller?.buildRoute(wayPoints: wayPoints);
+                  _controller?.buildRoute(wayPoints: wayPoints);
                 } catch (e) {
                   print(e);
                 }
-                _controller = p0;
-                _controller?.buildRoute(wayPoints: wayPoints);
               },
               onMapMove: () => _showRecenterButton(),
               onRouteBuilt: (p0) async {
-                setState(() async {
-                  EasyLoading.dismiss();
-                  _isRouteBuilt = true;
-                });
+                // setState(() async {
+                //   EasyLoading.dismiss();
+                //   _isRouteBuilt = true;
+                // });
               },
               onMapRendered: () async {
                 _controller?.setCenterIcon(
                     await VietmapHelper.getBytesFromAsset(
                         'assets/download.jpeg'));
+              },
+              onMapLongClick: (WayPoint? point) async {
+                if (_isRunning) return;
+                EasyLoading.show();
+                var data =
+                    await GetLocationFromLatLngUseCase(VietmapApiRepositories())
+                        .call(LocationPoint(
+                            lat: point?.latitude ?? 0,
+                            long: point?.longitude ?? 0));
+                EasyLoading.dismiss();
+                data.fold((l) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Có lỗi xảy ra')));
+                }, (r) => _showBottomSheetInfo(r));
+              },
+              onMapClick: (WayPoint? point) async {
+                if (_isRunning) return;
+                if (focusNode.hasFocus) {
+                  FocusScope.of(context).requestFocus(FocusNode());
+                  return;
+                }
+                EasyLoading.show();
+                var data =
+                    await GetLocationFromLatLngUseCase(VietmapApiRepositories())
+                        .call(LocationPoint(
+                            lat: point?.latitude ?? 0, long: point?.longitude ?? 0));
+                EasyLoading.dismiss();
+                data.fold((l) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content:
+                          Text('Không tìm thấy địa điểm gần vị trí bạn chọn')));
+                }, (r) => _showBottomSheetInfo(r));
               },
               onRouteProgressChange: (RouteProgressEvent routeProgressEvent) {
                 print('---------------------');
@@ -225,26 +274,41 @@ class _DirectionParkingState extends State<DirectionParking> {
                     left: 0,
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width,
-                      child: Padding(
-                        padding: EdgeInsets.only(right: 15.0.w),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            FloatingActionButton.extended(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(
+                              style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(18.0),
+                                          side: const BorderSide(
+                                              color: Colors.blue)))),
+                              onPressed: () {
+                                _isRunning = true;
+                                _controller?.startNavigation();
+                              },
+                              child: const Text('Bắt đầu')),
+                          ElevatedButton(
+                              style: ButtonStyle(
+                                  shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(18.0),
+                                          side: const BorderSide(
+                                              color: Colors.blue)))),
                               onPressed: () {
                                 _controller?.clearRoute();
                                 setState(() {
                                   _isRouteBuilt = false;
                                 });
-                                setState(() {
-                                  _isRunning = true;
-                                });
                               },
-                              label: Text("Xóa đường "),
-                            ),
-                          ],
-                        ),
+                              child: const Text('Xoá tuyến đường')),
+                        ],
                       ),
                     ),
                   )
@@ -323,7 +387,9 @@ class _DirectionParkingState extends State<DirectionParking> {
               longitude: location.longitude));
           if (data != null) {
             wayPoints.add(WayPoint(
-                name: 'CAR PARKING', latitude: data.lat, longitude: data.lng));
+                name: 'CAR PARKING',
+                latitude: data.lat,
+                longitude: data.lng));
           }
           _controller?.buildRoute(wayPoints: wayPoints);
           if (!mounted) return;
@@ -338,8 +404,8 @@ class _DirectionParkingState extends State<DirectionParking> {
               latitude: location.latitude,
               longitude: location.longitude));
           if (data != null) {
-            wayPoints.add(
-                WayPoint(name: '', latitude: data.lat, longitude: data.lng));
+            wayPoints.add(WayPoint(
+                name: '', latitude: data.lat, longitude: data.lng));
           }
           _controller?.buildAndStartNavigation(
               wayPoints: wayPoints, profile: DrivingProfile.drivingTraffic);

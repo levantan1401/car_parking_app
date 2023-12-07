@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     getParkingAPI();
   }
-
+ 
   _init() async {
     _location = Location();
     _cameraPosition = const CameraPosition(
@@ -204,11 +204,11 @@ class _HomePageState extends State<HomePage> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => DirectionParking(
-                                        idParking: apiData[i]
-                                            .id
-                                            .toString(), // Truyền thông tin sản phẩm
+                                        // idParking: apiData[i]
+                                        //     .id
+                                        //     .toString(), // Truyền thông tin sản phẩm
                                         lat: apiData[i].lat,
-                                        long: apiData[i].long,
+                                        lng: apiData[i].long,
                                       ),
                                     ),
                                   );

@@ -62,9 +62,9 @@ class ParkingItemScreen extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) => DirectionParking(
-                        idParking: idParking, // Truyền thông tin sản phẩm
+                        // idParking: idParking, // Truyền thông tin sản phẩm
                         lat: lat,
-                        long: long,
+                        lng: long,
                       ),
                     ),
                   );
