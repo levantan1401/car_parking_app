@@ -173,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                                             .toString(), // Truyền thông tin sản phẩm
                                         name: apiData[i].name,
                                         address: apiData[i].address,
-                                        image: apiData[i].image,
+                                        // image: apiData[i].image.,
                                         lat: apiData[i].lat,
                                         long: apiData[i].long,
                                         slot: apiData[i].slot,

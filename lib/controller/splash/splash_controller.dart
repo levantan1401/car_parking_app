@@ -20,11 +20,11 @@ class SplashController extends GetxController with GetSingleTickerProviderStateM
       Future.delayed(const Duration(seconds: 1), () {
         Get.offAllNamed('/onboarding');
       });
-    // }
-    //  else if (getStore.read('userId') == null){
-    //   Future.delayed(const Duration(seconds: 1), () {
-    //     Get.offAllNamed('/login');
-    //   });
+    }
+     else if (getStore.read('userId') == null){
+      Future.delayed(const Duration(seconds: 1), () {
+        Get.offAllNamed('/login');
+      });
     }else{
       Future.delayed(const Duration(seconds: 1), () {
         Get.offAllNamed('/main');

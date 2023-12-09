@@ -8,13 +8,16 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:giuaki_map_location/constants/api_google_key.dart';
 import 'package:giuaki_map_location/constants/color_constants.dart';
+import 'package:giuaki_map_location/models/list_parking.dart';
 import 'package:giuaki_map_location/models/station.dart';
 import 'package:giuaki_map_location/pages/main/home/direction_parking.dart';
 import 'package:giuaki_map_location/pages/main/home/map_demo.dart';
 import 'package:giuaki_map_location/pages/main/list_parking/detail_parking_screen.dart';
+import 'package:giuaki_map_location/services/list_parking_services.dart';
 import 'package:giuaki_map_location/services/place_service.dart';
 import 'package:vietmap_flutter_gl/vietmap_flutter_gl.dart';
 import 'package:location/location.dart';
+import 'package:vietmap_flutter_plugin/vietmap_flutter_plugin.dart';
 
 class MapHome extends StatefulWidget {
   const MapHome({super.key});
@@ -24,7 +27,7 @@ class MapHome extends StatefulWidget {
 }
 
 class _MapHomeState extends State<MapHome> {
-  List<Station> apiData = List.empty();
+  List<ListParkingModel> apiData = List.empty();
   VietmapController? mapController;
   UserLocation? userLocation;
   late CameraPosition? cameraPosition;
@@ -33,13 +36,14 @@ class _MapHomeState extends State<MapHome> {
       CustomInfoWindowController();
   final List<Marker> myMarkers = [];
   var isLight = true;
-  final List<Station> data_api = [];
+  final List<ListParkingModel> data_api = [];
 
   @override
   void initState() {
     _init();
     super.initState();
     getParkingAPI();
+    Vietmap.getInstance(VIETMAP_API_KEY);
   }
 
   _init() async {
@@ -134,8 +138,42 @@ class _MapHomeState extends State<MapHome> {
     }
   }
 
-  addLineNoParking() {
+  addLineNoParking() async {
+    // // mapController.
+    // var line = await mapController?.addPolyline(
+    //   const PolylineOptions(
+    //       geometry: [
+    //         LatLng(16.071737, 108.223574),
+    //         LatLng(16.069522, 108.209806),
+    //       ],
+    //       polylineColor: Colors.red,
+    //       polylineWidth: 14.0,
+    //       polylineOpacity: 1,
+    //       draggable: true),
+    // );
+    // Future.delayed(Duration(seconds: 3)).then((value) {
+    //   if (line != null) {
+    //     mapController?.updatePolyline(
+    //       line,
+    //       const PolylineOptions(
+    //           geometry: [
+    //             LatLng(16.071737, 108.223574),
+    //             LatLng(16.069522, 108.209806),
+    //           ],
 
+    //           polylineColor: Colors.blue,
+    //           polylineWidth: 14.0,
+    //           polylineOpacity: 1,
+    //           draggable: true),
+    //     );
+    //   }
+    // });
+
+    // VIETMAP PLUGIN
+    Vietmap.routing(VietMapRoutingParams(points: [
+      const LatLng(16.071737, 108.223574),
+      const LatLng(16.069522, 108.209806),
+    ]));
   }
 
   getCurrentPosion() {
@@ -157,7 +195,8 @@ class _MapHomeState extends State<MapHome> {
   // GET RESULTS FROM API
   Future<void> getParkingAPI() async {
     try {
-      final PlaceService apiService = PlaceService();
+      // final PlaceService apiService = PlaceService();
+      final ListParkingService apiService = ListParkingService();
       apiData = await apiService.getStations();
       for (int i = 0; i < apiData.length; i++) {}
     } catch (e) {
@@ -321,7 +360,7 @@ class _bottomSheetParking extends StatelessWidget {
     required this.i,
   });
 
-  final List<Station> apiData;
+  final List<ListParkingModel> apiData;
   final int i;
 
   @override
@@ -335,7 +374,7 @@ class _bottomSheetParking extends StatelessWidget {
               height: 200.h,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(apiData[i].image),
+                  image: NetworkImage(apiData[i].image.first),
                   fit: BoxFit.fitWidth,
                   filterQuality: FilterQuality.high,
                 ),
@@ -392,6 +431,7 @@ class _bottomSheetParking extends StatelessWidget {
                             name: apiData[i].name,
                             address: apiData[i].address,
                             image: apiData[i].image,
+                            description: apiData[i].description,
                             lat: apiData[i].lat,
                             long: apiData[i].long,
                             slot: apiData[i].slot,

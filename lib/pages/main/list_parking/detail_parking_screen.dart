@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_html/flutter_html.dart';
+
 
 import '../../../constants/color_constants.dart';
 import '../home/direction_parking.dart';
@@ -12,8 +14,9 @@ class ParkingItemScreen extends StatelessWidget {
   final String name;
 
   final String address;
+  final String? description;
 
-  final String image;
+  final List<String>? image;
   final double lat;
   final double long;
   final int slot;
@@ -23,8 +26,9 @@ class ParkingItemScreen extends StatelessWidget {
     super.key,
     required this.idParking,
     required this.name,
-    required this.image,
+    this.image,
     required this.address,
+    this.description,
     required this.lat,
     required this.long,
     required this.slot,
@@ -42,7 +46,7 @@ class ParkingItemScreen extends StatelessWidget {
             width: double.infinity,
             // child: Image.asset("assets/images/onboarding1.png"),
             child: Image.network(
-              image,
+              image!.first,
               width: MediaQuery.of(context).size.width,
               height: 300,
               fit: BoxFit.cover,
@@ -295,9 +299,9 @@ class ParkingItemScreen extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  Text(
-                      'Bãi đỗ xe ô tô ở Đà Nẵng, mở cửa 24/24, mang đến sự thuận tiện và an toàn cho chiếc xe của bạn. \nVới vị trí trung tâm, hệ thống an ninh hiện đại, và dịch vụ chuyên nghiệp, bạn có thể thoải mái khám phá thành phố mọi lúc, mọi nơi.',
-                      style: Theme.of(context).textTheme.bodyMedium!),
+                  Html(
+                      data: description!,
+                      ),
                   const Padding(
                     padding: EdgeInsets.symmetric(vertical: 15),
                     child: Divider(
@@ -350,8 +354,10 @@ class ParkingItemScreen extends StatelessWidget {
                     physics: ScrollPhysics(),
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
-                    itemCount: 3,
+                    itemCount: image?.length,
                     itemBuilder: (context, index) {
+                      String imageUrl = image![index];
+                      print("IMAGE " + imageUrl);
                       switch (index) {
                         case 0:
                           return steps(context,

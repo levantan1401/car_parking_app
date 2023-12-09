@@ -2,7 +2,9 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:giuaki_map_location/constants/color_constants.dart';
+import 'package:giuaki_map_location/models/list_parking.dart';
 import 'package:giuaki_map_location/models/station.dart';
+import 'package:giuaki_map_location/services/list_parking_services.dart';
 import 'package:giuaki_map_location/services/place_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -13,8 +15,9 @@ class ListParkingScreen extends StatelessWidget {
   // const ListParkingScreen({super.key});
   int limitSubtitle = 65;
 
-  final PlaceService apiService = PlaceService();
-  final List<Station> station = [];
+  final ListParkingService apiService = ListParkingService();
+  // final PlaceService apiService = PlaceService();
+  // final List<Station> station = [];
 
   // @override
   // Widget build(BuildContext context) {
@@ -48,9 +51,8 @@ class ListParkingScreen extends StatelessWidget {
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
-              List<Station> stations = snapshot.data as List<Station>;
-              print(stations);
-
+              // List<Station> stations = snapshot.data as List<Station>;
+              List<ListParkingModel> stations = snapshot.data as List<ListParkingModel>;
               return ListView.builder(
                 itemCount: stations.length,
                 itemBuilder: (context, index) {
@@ -67,6 +69,7 @@ class ListParkingScreen extends StatelessWidget {
                                   .toString(), // Truyền thông tin sản phẩm
                               name: stations[index].name,
                               address: stations[index].address,
+                              description: stations[index].description,
                               image: stations[index].image,
                               lat: stations[index].lat,
                               long: stations[index].long,
@@ -92,7 +95,7 @@ class ListParkingScreen extends StatelessWidget {
                       leading: ClipRRect(
                         borderRadius: BorderRadius.circular(7.0),
                         child: Image.network(
-                          stations[index].image,
+                          stations[index].image.first,
                           width: 90,
                           height: 170,
                           fit: BoxFit.cover,
