@@ -5,10 +5,12 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
 class PlaceService {
-  // final String apiUrl = "http://192.168.1.6/public/api/parkings";
   final String apiUrl =
-      "https://654e49accbc325355742ae72.mockapi.io/api/test/locate_test";
+      "https://654e49accbc325355742ae72.mockapi.io/api/test/parking_lot";
   // "https://654e49accbc325355742ae72.mockapi.io/api/test/locate_test";
+
+  var data = [];
+  List<Station> results = [];
 
   Future<List<Place>> getPlace(double lat, double lng) async {
     var response = await http.get(Uri.parse(
@@ -19,7 +21,7 @@ class PlaceService {
     return jsonResult.map((place) => Place.fromJson(place)).toList();
   }
 
-  Future<List<Station>> getStations() async {
+  Future<List<Station>> getStations({String? query}) async {
     final response = await http.get(Uri.parse(apiUrl));
 
     if (response.statusCode == 200) {
@@ -37,10 +39,23 @@ class PlaceService {
       print(decodedBody);
 
       Iterable stationsJson = convert.jsonDecode(decodedBody);
-      return stationsJson.map((station) => Station.fromJson(station)).toList();
+      results =
+          stationsJson.map((station) => Station.fromJson(station)).toList();
+      if (query != null) {
+        results = results
+            .where((element) =>
+                element.address.toLowerCase().contains(query.toLowerCase()))
+            .toList();
+
+        print(results);
+      } else {
+        print("API ERROR");
+      }
     } else {
       throw Exception('Failed to load stations');
     }
+
+    return results;
   }
 
   Future<List<Station>> getDetailStation(int id) async {

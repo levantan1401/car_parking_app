@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:giuaki_map_location/constants/api_google_key.dart';
 import 'package:giuaki_map_location/models/list_parking.dart';
 import 'package:giuaki_map_location/models/place.dart';

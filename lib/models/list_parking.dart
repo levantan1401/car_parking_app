@@ -29,7 +29,7 @@ class ListParkingModel {
       images = List<String>.from(json['image']);
     }
     return ListParkingModel(
-      id: json['id'],
+      id: int.parse(json['id'].toString()),
       name: json['name'],
       address: json['address'],
       description: json['description'],

@@ -2,7 +2,6 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:giuaki_map_location/constants/color_constants.dart';
-import 'package:giuaki_map_location/models/list_parking.dart';
 import 'package:giuaki_map_location/models/station.dart';
 import 'package:giuaki_map_location/pages/main/list_parking/search_parking.dart';
 import 'package:giuaki_map_location/services/list_parking_services.dart';
@@ -16,8 +15,8 @@ class ListParkingScreen extends StatelessWidget {
   // const ListParkingScreen({super.key});
   int limitSubtitle = 65;
 
-  final ListParkingService apiService = ListParkingService();
-  // final PlaceService apiService = PlaceService();
+  // final ListParkingService apiService = ListParkingService();
+  final PlaceService apiService = PlaceService();
   // final List<Station> station = [];
 
   // @override
@@ -59,10 +58,8 @@ class ListParkingScreen extends StatelessWidget {
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
-            // List<Station> stations = snapshot.data as List<Station>;
-            List<ListParkingModel> stations =
-                snapshot.data as List<ListParkingModel>;
-                print(stations);
+            List<Station> stations = snapshot.data as List<Station>;
+            print(stations);
             return ListView.builder(
               itemCount: stations.length,
               itemBuilder: (context, index) {

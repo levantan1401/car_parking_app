@@ -13,6 +13,7 @@ import 'package:giuaki_map_location/models/station.dart';
 import 'package:giuaki_map_location/pages/main/home/direction_parking.dart';
 import 'package:giuaki_map_location/pages/main/home/map_demo.dart';
 import 'package:giuaki_map_location/pages/main/list_parking/detail_parking_screen.dart';
+import 'package:giuaki_map_location/pages/main/list_parking/search_parking.dart';
 import 'package:giuaki_map_location/pages/search.dart';
 import 'package:giuaki_map_location/services/list_parking_services.dart';
 import 'package:giuaki_map_location/services/place_service.dart';
@@ -29,7 +30,7 @@ class MapHome extends StatefulWidget {
 }
 
 class _MapHomeState extends State<MapHome> {
-  List<ListParkingModel> apiData = List.empty();
+  List<Station> apiData = [];
   VietmapController? mapController;
   UserLocation? userLocation;
   late CameraPosition? cameraPosition;
@@ -38,7 +39,7 @@ class _MapHomeState extends State<MapHome> {
       CustomInfoWindowController();
   final List<Marker> myMarkers = [];
   var isLight = true;
-  final List<ListParkingModel> data_api = [];
+  final List<Station> data_api = [];
 
   @override
   void initState() {
@@ -197,10 +198,8 @@ class _MapHomeState extends State<MapHome> {
   // GET RESULTS FROM API
   Future<void> getParkingAPI() async {
     try {
-      // final PlaceService apiService = PlaceService();
-      final ListParkingService apiService = ListParkingService();
+      final PlaceService apiService = PlaceService();
       apiData = await apiService.getStations();
-      for (int i = 0; i < apiData.length; i++) {}
     } catch (e) {
       print(">>>>>>>>>>>>>>>>>>>>>>>Error fetching data from the API: $e");
     }
@@ -268,7 +267,7 @@ class _MapHomeState extends State<MapHome> {
               height: 40,
               child: FloatingActionButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => Search(),));
+                 showSearch(context: context, delegate: SearchParking());
                 },
                 child: Icon(
                   Icons.search,
@@ -408,7 +407,7 @@ class _bottomSheetParking extends StatelessWidget {
     required this.i,
   });
 
-  final List<ListParkingModel> apiData;
+  final List<Station> apiData;
   final int i;
 
   @override

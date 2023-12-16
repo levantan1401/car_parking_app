@@ -2,33 +2,43 @@ class Station {
   int id;
   String name;
   String address;
+  String description;
   double lat;
   double long;
-  String image;
+  List<String> image;
   int slot;
   int max;
+  int search_number;
 
   Station({
     required this.id,
     required this.name,
     required this.address,
+    required this.description,
     required this.lat,
     required this.long,
     required this.image,
     required this.slot,
     required this.max,
+    required this.search_number,
   });
 
   factory Station.fromJson(Map<String, dynamic> json) {
+    List<String> images = [];
+    if (json['image'] != null) {
+      images = List<String>.from(json['image']);
+    }
     return Station(
-      id: json['id'],
-      name: json['name'],
-      address: json['address'],
+      id: int.parse(json['id'].toString()),
+      name: json['name'].toString(),
+      address: json['address'].toString(),
+      description: json['description'].toString(),
       lat: json['lat'].toDouble(),
       long: json['long'].toDouble(),
-      image: json['image'],
+      image: images,
       slot: json['slot'],
       max: json['max'],
+      search_number: json['search_number'],
     );
   }
 }

@@ -80,10 +80,13 @@ class _SearchState extends State<Search> {
                   Container(
                     width: 150.0,
                     padding: EdgeInsets.all(8.0.sp),
-                    child: Image.network(
-                      "https://nld.mediacdn.vn/2019/7/6/6-7-bai-giu-xe-chat-chemanh-3-15623843597221490538198.jpg",
-                      height: 130.h,
-                      fit: BoxFit.cover,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(7.0),
+                      child: Image.network(
+                        "https://nld.mediacdn.vn/2019/7/6/6-7-bai-giu-xe-chat-chemanh-3-15623843597221490538198.jpg",
+                        height: 100.h,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                   // Right side - Information
