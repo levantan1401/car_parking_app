@@ -13,10 +13,12 @@ import 'package:giuaki_map_location/models/station.dart';
 import 'package:giuaki_map_location/pages/main/home/direction_parking.dart';
 import 'package:giuaki_map_location/pages/main/home/map_demo.dart';
 import 'package:giuaki_map_location/pages/main/list_parking/detail_parking_screen.dart';
+import 'package:giuaki_map_location/pages/search.dart';
 import 'package:giuaki_map_location/services/list_parking_services.dart';
 import 'package:giuaki_map_location/services/place_service.dart';
 import 'package:vietmap_flutter_gl/vietmap_flutter_gl.dart';
 import 'package:location/location.dart';
+import 'package:vietmap_flutter_navigation/views/banner_instruction.dart';
 import 'package:vietmap_flutter_plugin/vietmap_flutter_plugin.dart';
 
 class MapHome extends StatefulWidget {
@@ -255,6 +257,52 @@ class _MapHomeState extends State<MapHome> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
+        // SEARCH
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            SizedBox(
+              width: 10.w,
+            ),
+            SizedBox(
+              height: 40,
+              child: FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Search(),));
+                },
+                child: Icon(
+                  Icons.search,
+                  color: ColorsConstants.kBackgroundColor,
+                ),
+                backgroundColor: ColorsConstants.kActiveColor,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 10.h,),
+        // Info
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            SizedBox(
+              width: 10.w,
+            ),
+            SizedBox(
+              height: 40,
+              child: FloatingActionButton(
+                onPressed: () {
+                  print("Click Button Info");
+                },
+                child: Icon(
+                  Icons.info_outlined,
+                  color: ColorsConstants.kBackgroundColor,
+                ),
+                backgroundColor: ColorsConstants.kActiveColor,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: 10.h,),
         Row(
           children: [
             SizedBox(
@@ -308,7 +356,7 @@ class _MapHomeState extends State<MapHome> {
                       child: FloatingActionButton.extended(
                         onPressed: () {
                           reNewLocation();
-                          addLineNoParking();
+                          // addLineNoParking();
                         },
                         label: Text(
                           "Cấm đổ xe",
@@ -326,22 +374,22 @@ class _MapHomeState extends State<MapHome> {
                       width: 5.w,
                     ),
                     // NGẬP NƯỚC
-                    SizedBox(
-                      height: 30,
-                      child: FloatingActionButton.extended(
-                        onPressed: () {},
-                        label: Text(
-                          "Ngậm nước",
-                          style: TextStyle(color: ColorsConstants.kActiveColor),
-                        ),
-                        icon: Icon(
-                          Icons.car_crash,
-                          color: ColorsConstants.kActiveColor,
-                          size: 20,
-                        ),
-                        backgroundColor: ColorsConstants.kBackgroundColor,
-                      ),
-                    ),
+                    // SizedBox(
+                    //   height: 30,
+                    //   child: FloatingActionButton.extended(
+                    //     onPressed: () {},
+                    //     label: Text(
+                    //       "Ngậm nước",
+                    //       style: TextStyle(color: ColorsConstants.kActiveColor),
+                    //     ),
+                    //     icon: Icon(
+                    //       Icons.car_crash,
+                    //       color: ColorsConstants.kActiveColor,
+                    //       size: 20,
+                    //     ),
+                    //     backgroundColor: ColorsConstants.kBackgroundColor,
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

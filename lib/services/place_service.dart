@@ -5,10 +5,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
 class PlaceService {
-
-
   // final String apiUrl = "http://192.168.1.6/public/api/parkings";
-  final String apiUrl = "https://654e49accbc325355742ae72.mockapi.io/api/test/locate_test";
+  final String apiUrl =
+      "https://654e49accbc325355742ae72.mockapi.io/api/test/locate_test";
   // "https://654e49accbc325355742ae72.mockapi.io/api/test/locate_test";
 
   Future<List<Place>> getPlace(double lat, double lng) async {

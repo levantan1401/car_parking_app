@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:giuaki_map_location/constants/api_google_key.dart';
 import 'package:giuaki_map_location/models/list_parking.dart';
 import 'package:giuaki_map_location/models/place.dart';
@@ -5,11 +7,12 @@ import 'package:giuaki_map_location/models/station.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
-class ListParkingService{
+class ListParkingService {
+  final String apiUrl =
+      "https://654e49accbc325355742ae72.mockapi.io/api/test/parking_lot";
 
-  // final String apiUrl = "http://192.168.1.6/public/api/parkings";
-  final String apiUrl = "https://654e49accbc325355742ae72.mockapi.io/api/test/parking_lot";
-  // "https://654e49accbc325355742ae72.mockapi.io/api/test/locate_test";
+  List<ListParkingModel> results = [];
+  var data = [];
 
   Future<List<ListParkingModel>> getStations() async {
     final response = await http.get(Uri.parse(apiUrl));
@@ -43,3 +46,14 @@ class ListParkingService{
     return jsonResult.map((place) => ListParkingModel.fromJson(place)).toList();
   }
 }
+
+ // if (query != null) {
+      //   results = results
+      //       .where((element) =>
+      //           element.address.toLowerCase().contains(query.toLowerCase()))
+      //       .toList();
+
+      //   print(results);
+      // } else {
+      //   print("API ERROR");
+      // }
