@@ -15,7 +15,6 @@ import 'package:giuaki_map_location/pages/main/home/map_demo.dart';
 import 'package:giuaki_map_location/pages/main/list_parking/detail_parking_screen.dart';
 import 'package:giuaki_map_location/pages/main/list_parking/search_parking.dart';
 import 'package:giuaki_map_location/pages/search.dart';
-import 'package:giuaki_map_location/services/list_parking_services.dart';
 import 'package:giuaki_map_location/services/place_service.dart';
 import 'package:vietmap_flutter_gl/vietmap_flutter_gl.dart';
 import 'package:location/location.dart';
@@ -74,13 +73,6 @@ class _MapHomeState extends State<MapHome> {
   _onMapCreated(VietmapController controller) {
     mapController = controller;
   }
-
-  // _onStyleLoadedCallback() {
-  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-  //     backgroundColor: Theme.of(context).primaryColor,
-  //     duration: Duration(seconds: 1),
-  //   ));
-  // }
 
   _markerWidget(IconData icon) {
     return Icon(icon, color: Colors.red, size: 50);

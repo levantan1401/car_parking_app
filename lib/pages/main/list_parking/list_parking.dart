@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:giuaki_map_location/constants/color_constants.dart';
 import 'package:giuaki_map_location/models/station.dart';
 import 'package:giuaki_map_location/pages/main/list_parking/search_parking.dart';
-import 'package:giuaki_map_location/services/list_parking_services.dart';
+import 'package:giuaki_map_location/pages/main/list_parking/widget/card_item_parking.dart';
 import 'package:giuaki_map_location/services/place_service.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -12,26 +12,10 @@ import 'dart:convert';
 import 'detail_parking_screen.dart';
 
 class ListParkingScreen extends StatelessWidget {
-  // const ListParkingScreen({super.key});
   int limitSubtitle = 65;
 
-  // final ListParkingService apiService = ListParkingService();
   final PlaceService apiService = PlaceService();
-  // final List<Station> station = [];
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return const Scaffold(
-  //     backgroundColor: ColorsConstants.kMainColor,
-  //     body: SafeArea(
-  //       child: Center(
-  //           child: Text(
-  //         "LIST PARKING",
-  //         style: TextStyle(color: Colors.white),
-  //       )),
-  //     ),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -63,52 +47,30 @@ class ListParkingScreen extends StatelessWidget {
             return ListView.builder(
               itemCount: stations.length,
               itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
-                    onTap: () {
-                      print("Click " + stations[index].name);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ParkingItemScreen(
-                            idParking: stations[index]
-                                .id
-                                .toString(), // Truyền thông tin sản phẩm
-                            name: stations[index].name,
-                            address: stations[index].address,
-                            description: stations[index].description,
-                            image: stations[index].image,
-                            lat: stations[index].lat,
-                            long: stations[index].long,
-                            slot: stations[index].slot,
-                            max: stations[index].max,
-                          ),
-                        ),
-                      );
-                    },
-                    title: Text(
-                      stations[index].name,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                return GestureDetector(
+                  onTap: () {
+                  print("Click " + stations[index].name);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ParkingItemScreen(
+                        idParking: stations[index]
+                            .id
+                            .toString(), // Truyền thông tin sản phẩm
+                        name: stations[index].name,
+                        address: stations[index].address,
+                        description: stations[index].description,
+                        image: stations[index].image,
+                        lat: stations[index].lat,
+                        long: stations[index].long,
+                        slot: stations[index].slot,
+                        max: stations[index].max, 
                       ),
                     ),
-                    subtitle: Text(
-                      (stations[index].address.length > limitSubtitle)
-                          ? '${stations[index].address.substring(0, limitSubtitle)}...'
-                          : stations[index].address,
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                    leading: ClipRRect(
-                      borderRadius: BorderRadius.circular(7.0),
-                      child: Image.network(
-                        stations[index].image.first,
-                        width: 90,
-                        height: 170,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
+                  );
+                },
+                child: CardItemWidget(stations: stations, limitSubtitle: limitSubtitle, index: index),
+                  
                 );
               },
             );

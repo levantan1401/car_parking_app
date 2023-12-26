@@ -7,12 +7,10 @@ import 'package:giuaki_map_location/models/place.dart';
 import 'package:giuaki_map_location/pages/main/home/home_page.dart';
 import 'package:giuaki_map_location/pages/main_screen.dart';
 import 'package:giuaki_map_location/pages/onboarding/onboarding_screen.dart';
-// import 'package:giuaki_map_location/pages/home_page.dart';
 import 'package:giuaki_map_location/pages/search.dart';
 import 'package:giuaki_map_location/pages/splash/splash_screen.dart';
 import 'package:giuaki_map_location/services/geolocator_service.dart';
 import 'package:giuaki_map_location/services/place_service.dart';
-// import 'package:provider/provider.dart';
 
 //NEWS
 import 'router/router.dart';
@@ -39,7 +37,6 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'CarParking',
           getPages: Routers.routers,
-          // home: MainScreen(),
           initialRoute: Routers.INITIAL,
           // initialBinding: AppBinding(),
         );

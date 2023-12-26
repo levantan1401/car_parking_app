@@ -15,7 +15,7 @@ import 'package:giuaki_map_location/pages/onboarding/onboarding_screen.dart';
 import 'package:giuaki_map_location/pages/splash/splash_screen.dart';
 
 class Routers {
-  static const INITIAL = '/main';
+  static const INITIAL = '/splash';
 
   static final routers = [
     GetPage(
@@ -36,29 +36,11 @@ class Routers {
       name: '/signup',
       page: () => SignIn(),
     ),
-    // GetPage(
-    //   name: '/directions_parking',
-    //   page: () => DirectionParking(),
-    // ),
-    // GetPage(
-    //   name: '/parking_details',
-    //   page: () => ParkingItemScreen(),
-    // ),
-    // GetPage(
-    //   name: '/main',
-    //   page: () => HomePage(),
-    //   binding: HomepageBinding(),
-    // ),
     GetPage(
       name: '/EditProfile',
       page: () => EditProfile(),
-      // binding: HomepageBinding(),
     ),
-    // GetPage(
-    //   name: '/ProfileScreen',
-    //   page: () => ProfileScreen(),
-    //   binding: HomepageBinding(),
-    // ),
+
     GetPage(
         name: '/main',
         page: () => MainScreen(),
