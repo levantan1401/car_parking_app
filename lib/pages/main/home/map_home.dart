@@ -134,35 +134,6 @@ class _MapHomeState extends State<MapHome> {
   }
 
   addLineNoParking() async {
-    // // mapController.
-    // var line = await mapController?.addPolyline(
-    //   const PolylineOptions(
-    //       geometry: [
-    //         LatLng(16.071737, 108.223574),
-    //         LatLng(16.069522, 108.209806),
-    //       ],
-    //       polylineColor: Colors.red,
-    //       polylineWidth: 14.0,
-    //       polylineOpacity: 1,
-    //       draggable: true),
-    // );
-    // Future.delayed(Duration(seconds: 3)).then((value) {
-    //   if (line != null) {
-    //     mapController?.updatePolyline(
-    //       line,
-    //       const PolylineOptions(
-    //           geometry: [
-    //             LatLng(16.071737, 108.223574),
-    //             LatLng(16.069522, 108.209806),
-    //           ],
-
-    //           polylineColor: Colors.blue,
-    //           polylineWidth: 14.0,
-    //           polylineOpacity: 1,
-    //           draggable: true),
-    //     );
-    //   }
-    // });
 
     // VIETMAP PLUGIN
     Vietmap.routing(VietMapRoutingParams(points: [
@@ -364,23 +335,6 @@ class _MapHomeState extends State<MapHome> {
                     SizedBox(
                       width: 5.w,
                     ),
-                    // NGẬP NƯỚC
-                    // SizedBox(
-                    //   height: 30,
-                    //   child: FloatingActionButton.extended(
-                    //     onPressed: () {},
-                    //     label: Text(
-                    //       "Ngậm nước",
-                    //       style: TextStyle(color: ColorsConstants.kActiveColor),
-                    //     ),
-                    //     icon: Icon(
-                    //       Icons.car_crash,
-                    //       color: ColorsConstants.kActiveColor,
-                    //       size: 20,
-                    //     ),
-                    //     backgroundColor: ColorsConstants.kBackgroundColor,
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
